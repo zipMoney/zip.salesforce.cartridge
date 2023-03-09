@@ -1,4 +1,4 @@
-### Zip Payments 2019 Link Cartridge
+### Zip Payments Link Cartridge
 
 Version 19.1.0
 
