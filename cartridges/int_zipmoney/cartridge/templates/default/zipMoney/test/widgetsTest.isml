@@ -1,0 +1,14 @@
+<!--- TEMPLATENAME: widgetsTest.isml --->
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<isinclude template = "zipMoney/widgets/zipMoney_widget_api"/>
+
+<isinclude template = "zipMoney/widgets/zipMoney_learn_more"/>
+
+<isinclude template = "zipMoney/widgets/zipMoney_cart"/>
+
+<isinclude template = "zipMoney/widgets/zipMoney_product"/>
+
+<isset name="zipMoney_amount" value="1000" scope="page"/>
+<isinclude template = "zipMoney/widgets/zipMoney_payment_calculator"/>
+
+<isinclude template = "zipMoney/widgets/zipMoney_landing_page"/>

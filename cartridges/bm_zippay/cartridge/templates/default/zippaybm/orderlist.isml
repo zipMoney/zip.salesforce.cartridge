@@ -1,0 +1,123 @@
+<isdecorate template="zippaybm/util/pt_zippay">
+
+<isinclude template="inc/Modules">
+<isinclude template="zippaybm/util/modules">
+
+<isscript>
+
+var isSearchByOrderNo = pdict.CurrentHttpParameterMap.orderNo.submitted;
+
+if (!isSearchByOrderNo) {
+	isSearchByOrderNo = true;
+}
+</isscript>
+ 
+<div class="zippaybm_header">
+	<isset name="ordersUrl"   value="${URLUtils.url('SiteNavigationBar-ShowMenuitemOverview', 'CurrentMenuItemId', 'orders')}" scope="page">
+	<isbreadcrumb name1="Ordering" url1="${ordersUrl}" name2="${Resource.msg('transactions.title', 'zippaybm', null)}">
+	
+	<table>
+		<tr><td width="100%" class="table_title w e s n">${Resource.msg('transactions.title', 'zippaybm', null)}</td></tr>
+		<tr><td class="w e s"></td></tr>
+		<tr><td class="table_title_description e w"><p>${Resource.msg('transactions.description', 'zippaybm', null)}</p></td></tr>
+	</table>
+</div>
+
+<div id="zippaybm_search_order_by_id" class="js_zippaybm_switch_block" style="display:block">
+	<table class="infobox w e s n">
+		<tr>
+			<td class="infobox_title_search">${Resource.msg('search.order.title', 'zippaybm', null)}</td>
+		</tr>
+		<tr>
+			<td class="infobox_item_search" colspan="2">
+				<form action="${URLUtils.https('ZippayAdmin-Orders')}" method="post">
+					<table style="width:inherit">
+						<tr>
+							<td class="infobox_item_search" nowrap="nowrap" style="width:110px"><span>${Resource.msg('search.order.number', 'zippaybm', null)}:</span>&nbsp;</td>
+							<td class="infobox_item_search"><input type="text" name="orderNo" value="${pdict.CurrentHttpParameterMap.orderNo.submitted ? pdict.CurrentHttpParameterMap.orderNo.stringValue : ''}" maxlength="350" size="35" class="inputfield_en"></td>
+							<td class="infobox_item_search">&nbsp;</td>
+							<td class="infobox_item_search"><button name="simpleSearch" value="true" class="button">${Resource.msg('search.submitbutton', 'zippaybm', null)}</button></td>
+						</tr>
+					</table>
+				</form>
+			</td>
+		</tr>
+		<tr><td colspan="2">&nbsp;</td></tr>
+	</table>
+</div>
+
+
+<isscript>
+	var pagingModel = pdict.PagingModel;
+	var orders = !empty(pagingModel) ? pagingModel.pageElements : [];
+</isscript>
+
+<isif condition="${!empty(orders)}">
+	<table>
+		<tr>
+			<td class="table_header w e s">${Resource.msg('search.grid.number', 'zippaybm', null)}</td>
+			<td class="table_header e s" nowrap="nowrap">${Resource.msg('search.grid.date', 'zippaybm', null)}</td>
+			<td class="table_header e s" nowrap="nowrap">${Resource.msg('search.grid.registration', 'zippaybm', null)}</td>
+			<td class="table_header e s" nowrap="nowrap">${Resource.msg('search.grid.customer', 'zippaybm', null)}</td>
+			<td class="table_header e s" nowrap="nowrap">${Resource.msg('search.grid.email', 'zippaybm', null)}</td>
+			<td class="table_header e s left" nowrap="nowrap">${Resource.msg('search.grid.total', 'zippaybm', null)}</td>
+			<td class="table_header e s left" nowrap="nowrap">${Resource.msg('search.grid.zippayamount', 'zippaybm', null)}</td>
+			<td class="table_header e s left" nowrap="nowrap">${Resource.msg('search.grid.capturedamount', 'zippaybm', null)}</td>
+			<td class="table_header e s" nowrap="nowrap">${Resource.msg('search.grid.refundedamount', 'zippaybm', null)}</td>
+			<td class="table_header e s" nowrap="nowrap">${Resource.msg('search.grid.paymentstatus', 'zippaybm', null)}</td>
+			<td class="table_header e s left" nowrap="nowrap">${Resource.msg('search.grid.status', 'zippaybm', null)}</td>
+			<td class="table_header e s left" nowrap="nowrap" colspan="2">${Resource.msg('search.grid.action', 'zippaybm', null)}</td>
+		</tr>
+		
+		<isloop items="${orders}" var="order">
+			<tr>
+				<td class="table_detail w e s" nowrap="nowrap">
+                      ${order.orderNo}
+				</td>
+				<td class="table_detail e s" nowrap="nowrap">
+					<isprint value="${order.orderDate}"/>
+				</td>
+				<isif condition="${typeof order.isRegestered === 'boolean'}">
+					<td class="table_detail e s" nowrap="nowrap"><isprint value="${order.isRegestered ? Resource.msg('search.grid.registration.registered', 'zippaybm', null) : Resource.msg('search.grid.registration.unregistered', 'zippaybm', null)}"/></td>
+				<iselse>
+					<td class="table_detail e s" nowrap="nowrap"><isprint value="${order.isRegestered}"/></td>
+				</isif>
+				<td class="table_detail e s" nowrap="nowrap"><isprint value="${order.customer}"/></td>
+				<td class="table_detail e s" nowrap="nowrap"><isprint value="${order.email}"/></td>
+				<td class="table_detail e s" nowrap="nowrap"><isprint value="${order.orderTotal}"/></td>
+				<td class="table_detail e s" nowrap="nowrap"><isprint value="${order.zippayAmount}"/></td>
+				<td class="table_detail e s" nowrap="nowrap"><isprint value="${order.capturedAmount}"/></td>
+				<td class="table_detail e s" nowrap="nowrap"><isprint value="${order.refundedAmount}"/></td>
+				<td class="table_detail e s" nowrap="nowrap"><isprint value="${order.paymentStatus}"/></td>
+				<td class="table_detail e s" nowrap="nowrap"><isprint value="${order.status}"/></td>
+    
+				<td class="table_detail e s" nowrap="nowrap" >
+					<isif condition="${order.canCapture}">
+						<a class="zip_capture_action" onClick="return false;" href="javascript:void();" data-orderno="${order.orderNo}" data-iscustom='${order.isCustom}' data-currencycode="${order.currencyCode}" title="${Resource.msgf('ordertransaction.title', 'zippaybm', null, order.orderNo)}">${Resource.msg('search.grid.capture', 'zippaybm', null)}</a> 
+					</isif>
+					<isif condition="${ order.canRefund }">
+						<a class="zip_refund_action"  onClick="return false;" href="javascript:void();" data-orderno="${order.orderNo}" data-iscustom='${order.isCustom}' data-currencycode="${order.currencyCode}" title="${Resource.msgf('ordertransaction.title', 'zippaybm', null, order.orderNo)}">
+							${Resource.msg('search.grid.refund', 'zippaybm', null)}
+						</a>
+					</isif>
+					<isif condition="${ order.canCancel }">
+						<a href="${URLUtils.https('ZippayAdmin-Cancel', 'orderNo', order.orderNo)}"  >${Resource.msg('search.grid.cancel', 'zippaybm', null)}</a>
+					</isif>
+				</td>
+			</tr>
+		</isloop>
+	</table>
+	
+	<iszippaypagination pageurl="${URLUtils.https('ZippayAdmin-Orders')}" pagingmodel="${pagingModel}"/>
+	
+<iselse>
+
+	<div class="table_detail w e s">${Resource.msg('transactions.emptysearch', 'zippaybm', null)}</div>
+
+</isif>
+
+<div class="zippaybm_footer">
+	<a class="button" href="${ordersUrl}">&lt;&lt; ${Resource.msg('transactions.backordering', 'zippaybm', null)}</a>
+</div>
+
+</isdecorate>

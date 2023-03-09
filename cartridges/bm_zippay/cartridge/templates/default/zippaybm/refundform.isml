@@ -1,0 +1,34 @@
+<div id="zip_refund_form" class="">
+    <form class="zippay_action_form zippaybm_content" action="${URLUtils.url('ZippayAdmin-RefundAction')}">
+        <input type="hidden" name="orderNo" value="${pdict.order.orderNo}" />
+
+        <h2>${Resource.msg('transaction.refund.title', 'zippaybm', null)}</h2>
+
+        <div class="zippay_error_msg_box zippay_error_msg_box_amt_required"><p>${Resource.msg('forms.error.amt.required', 'zippaybm', null)}</p></div>
+        <div class="zippay_error_msg_box zippay_error_msg_box_amt_greaterzero"><p>${Resource.msg('forms.error.amt.greaterzero', 'zippaybm', null)}</p></div>
+        <div class="zippay_error_msg_box zippay_error_msg_box_amt_float"><p>${Resource.msg('forms.error.amt.float', 'zippaybm', null)}</p></div>
+
+        <div class="zippay_error_msg_box zippay_error_msg_box_note_required"><p>${Resource.msg('forms.error.note.required', 'zippaybm', null)}</p></div>
+   
+        <table class="zippaybm_transaction_detail_table infobox w e s n">
+            <tr>
+                <td class="infobox_title top">${Resource.msg('transaction.refund.refundamount', 'zippaybm', null)}:</td>
+                <td class="infobox_item top"><input type="text" name="amt" value="" class="refund_amount" data-validation="required,float,greaterzero" /> 
+                <span class="refund_remain_amount">${pdict.amount}</span>&nbsp;${pdict.currencyCode}</td>
+            </tr>
+            <tr>
+                <td class="infobox_title top">${Resource.msg('transaction.refund.fullrefund', 'zippaybm', null)}:</td>
+                <td class="infobox_item top"><input type="checkbox" name="full_refund" value="" class="full_refund_checkbox"  ></td>
+            </tr>
+            <tr>
+                <td class="infobox_title top">
+                    ${Resource.msg('transaction.refund.note', 'zippaybm', null)}<br/>
+                </td>
+                <td class="infobox_item top">
+                    <textarea name="note" cols="50" rows="10" data-validation="required"  data-maxcount="255" placeholder="${Resource.msg('forms.note.placeholder', 'zippaybm', null)}"></textarea>
+                </td>
+            </tr>
+        </table>
+
+    </form>
+</div>

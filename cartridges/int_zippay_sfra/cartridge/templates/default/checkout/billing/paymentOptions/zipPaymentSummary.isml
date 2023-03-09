@@ -1,0 +1,6 @@
+<div class="method-name">
+    ${payment.name} <br />
+</div>
+<div class="amount">
+    ${payment.amountFormatted}
+</div>

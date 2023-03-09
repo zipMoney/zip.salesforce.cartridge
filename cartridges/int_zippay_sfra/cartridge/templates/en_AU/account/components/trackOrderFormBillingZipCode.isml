@@ -1,0 +1,13 @@
+<div class="form-group required">
+    <label class="form-control-label" for="trackorder-form-zip">
+        ${Resource.msg('label.input.trackorder.postalcode', 'login', null)}
+    </label>
+    <input
+        type="text"
+        required
+        class="form-control"
+        id="trackorder-form-zip"
+        name="trackOrderPostal"
+        pattern="(^(?:(?:[2-8]\d|9[0-7]|0?[28]|0?9(?=09))(?:\d{2}))$)">
+    <div class="invalid-feedback"></div>
+</div>

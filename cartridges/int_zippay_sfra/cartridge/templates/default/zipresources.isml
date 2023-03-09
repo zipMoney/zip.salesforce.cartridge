@@ -1,0 +1,37 @@
+<iscontent type="text/javascript" charset="UTF-8" compact="true"/>
+<isscript>
+    var Config = require('~/cartridge/config/config');
+    var ZipModel = require('*/cartridge/scripts/zip/helpers/zip');
+</isscript>
+<isscript>
+    var urls = {
+        cancel: URLUtils.https('Zip-Cancel').toString(),
+        checkout: URLUtils.https('Zip-Checkout').toString(),
+        redirect: URLUtils.https('Zip-Redirect').toString(),
+        declined: URLUtils.https('Checkout-Begin', 'stage', 'payment', 'error', 1).toString()
+    };
+
+    var texts = {
+        continueToZip: Resource.msg('continueToZip', 'zip', null),
+        technicalError: Resource.msg('error.technical', 'checkout', null),
+        zipDeclined: ZipModel.getZipPaymentDeclinedErrorMessage(),
+        errorZipAddress: Resource.msg('error.zip.address', 'zip', null),
+        errorInsufficientFunds: Resource.msg('error.zip.insufficientFunds', 'zip', null)
+    };
+
+    var config = {
+        zip_payment_methods: Config.ZIP_PAYMENT_METHODS,
+        zipLightbox: ZipModel.isLightbox()
+    };
+
+    var resources = {
+        error: pdict.zipError,
+        texts: texts,
+        urls: urls,
+        config: config
+    };
+</isscript>
+
+(function (){
+    window.ZipResources = <isprint value="${JSON.stringify(resources)}" encoding="on"/>;
+}());

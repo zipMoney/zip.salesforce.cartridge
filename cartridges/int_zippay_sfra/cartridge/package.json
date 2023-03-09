@@ -1,0 +1,14 @@
+{
+  "init": [],
+  "name": "int_zippay_sfra",
+  "version": "19.1.0",
+  "description": "Salesforce Commerce Cloud | ZipPay SFRA",
+  "main": "index.js",
+  "author": "Ivan Zanev",
+  "devDependencies": {
+    "eslint": "^3.2.2",
+    "eslint-config-airbnb-base": "^5.0.1",
+    "eslint-plugin-import": "^1.12.0"
+  },
+  "license": "ISC"
+}

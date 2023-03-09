@@ -1,0 +1,22 @@
+<iscontent type="text/html" charset="UTF-8" compact="true"/>
+<isscript>
+    var TemplateHelpers = require('~/cartridge/scripts/zipMoney/util/template');
+</isscript>
+<isif condition="${customer.registered && customer.authenticated && TemplateHelpers.isZipTokenizationEnabled(paymentOptionId) && !TemplateHelpers.isCustomerHasToken(customer)}">
+    <div class="row">
+        <div class="col">
+            <div class="save-zip custom-control custom-checkbox">
+				<isinputfield formfield="${zipForm.saveZip}" type="checkbox" rowclass="custom-control-input" />
+
+                <span class="save-zip-hint" style="display: block; font-size: 11em; margin-left: 27%; margin-top: -16em;">${Resource.msg('label.savetoacc.hint','zip',null)}</span>
+            </div>
+        </div>
+    </div>
+</isif>
+
+<script src="https://static.zipmoney.com.au/lib/js/zm-widget-js/dist/zip-widget.min.js"></script>
+<div data-zm-merchant="${TemplateUtils.getZipMarketingKey()}" data-env="${TemplateUtils.getZipMarketingEnvironment()}"></div>  
+
+<p class="zip-learn-more">
+    <span>${Resource.msg('label.ownitnow', 'zip', null)} <a href="javascript:void(0);" id="zip-widg-1" zm-widget="popup" zm-popup-asset="termsdialog" title="${Resource.msg('label.ownitnow', 'zip', null)}">${Resource.msg('label.learnmore', 'zip', null)}</a></span>
+</p>

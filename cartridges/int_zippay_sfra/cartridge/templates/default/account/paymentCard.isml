@@ -1,0 +1,54 @@
+<isinclude template="account/payment/deletePaymentModal"/>
+<isscript>
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addJs('/js/paymentInstruments.js');
+    assets.addCss('/css/account/payment.css');
+</isscript>
+<div class="card">
+    <div class="card-header clearfix">
+        <h4 class="pull-left">${Resource.msg('label.payment','account',null)}</h4>
+        <isif condition="${pdict.account.payment}">
+            <a href="${URLUtils.url('PaymentInstruments-List')}" class="pull-right">${Resource.msg('link.view','account',null)}</a>
+        </isif>
+    </div>
+    <isif condition="${pdict.account.payment}">
+        <div class="card-body card-info-group">
+            <p>${Resource.msg('label.payment.credit','account',null)} ${pdict.account.payment.creditCardType}</p>
+            <p>${pdict.account.payment.maskedCreditCardNumber}</p>
+            <p>${Resource.msg('label.payment.ending','account',null)} ${pdict.account.payment.creditCardExpirationMonth}/${pdict.account.payment.creditCardExpirationYear}</p>
+        </div>
+    </isif>
+    <!-- Rows for Credit Cards -->
+    <isscript>
+        var config = require("~/cartridge/config/config");
+        var TemplateUtils = require("*/cartridge/scripts/util/template");
+    </isscript>
+    <isloop items="${pdict.account.customerPaymentInstruments}" var="paymentInstrument">
+        <div class="row justify-content-center" id="uuid-${paymentInstrument.UUID}">
+            <div class="col-sm-8 col-md-6">
+                <isif condition="${paymentInstrument.paymentMethod === config.ZIP_PROCESSOR}">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="pull-left">Zip</h4>
+                        </div>
+                        <div class="card-body card-body-positioning">
+                            <div class="card-info-group"></div>
+                            <button
+                                type="button"
+                                class="remove-btn remove-payment btn-light"
+                                data-toggle="modal"
+                                data-target="#deletePaymentModal"
+                                data-id="${paymentInstrument.UUID}"
+                                data-url="${URLUtils.url('PaymentInstruments-DeletePayment')}">
+                                &times;
+                            </button>
+                        </div>
+                    </div>
+                </isif>
+            </div>
+        </div>
+    </isloop>
+    <div class="card-footer card-footer-border text-center">
+        <a href="${URLUtils.url('PaymentInstruments-AddPayment')}" class="card-link">${Resource.msg('link.addnew','account',null)}</a>
+    </div>
+</div>

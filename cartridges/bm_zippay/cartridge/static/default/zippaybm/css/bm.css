@@ -1,0 +1,32 @@
+.zippaybm_header {margin-bottom:10px}
+.zippaybm_footer {padding:15px 0 0 0}
+.zippay_hide {display:none}
+
+.zippaybm_content table {width:100%; border-spacing:0; border-collapse:collapse}
+.zippaybm_content h2 {color: #84BD00; padding:0 0 10px; margin:0; font-size:15px; font-weight:bold; line-height:25px}
+.zippaybm_content .error_box {margin-bottom:10px}
+.zippaybm_content .zippaybm_transaction_detail_table {font-size:13px; line-height:1.4; margin-bottom:10px; width:100%}
+.zippaybm_content .zippaybm_transaction_detail_table td {padding:4px 6px}
+.zippaybm_content .zippaybm_gray {background:#fcfcfc}
+.zippaybm_content .zippaybm_table_head {font-size:14px; background:#f0f0f0; font-weight:bold}
+.zippaybm_content .zippaybm_table_head td {border-bottom:1px solid #dadada}
+.zippaybm_content .infobox_title {width:185px; text-align:right}
+.zippaybm_content .infobox_title i {font-weight:normal; color:#777}
+
+.zippaybm_pagination {padding:10px 0 0 0}
+.zippaybm_pagination .pagecursortxt {padding:0 2px}
+
+.zippaybm_window_content .zippaybm_content {padding:10px 10px 0 10px}
+.zippaybm_window_content .zippaybm_footer {display:none}
+.zippaybm_window_content .zippaybm_header {display:none}
+.zippaybm_window_content .x-window-body {background:#fff}
+.zippaybm_window_content table {width:inherit}
+
+.zippay_error_msg_box {display:none; min-height:30px; margin:0 0 10px 0; border:1px solid #ffcf0f; padding:12px 12px 0 60px; background-repeat: no-repeat; color:#000; font-size:13px; line-height:1.3em}
+.zippay_error_msg_box p {padding:0 0 12px 0}
+
+.js_zippay_toggle_button {margin-left: 10px; margin-bottom: 10px; padding: 0px 7px}
+
+
+.zippay_error_msg_box {display:none; min-height:30px; margin:0 0 10px 0; border:1px solid #ffcf0f; padding:12px 12px 0 60px; background-repeat: no-repeat; color:#000; background: #ffffde no-repeat 15px 10px; font-size:13px; line-height:1.3em}
+.zippay_error_msg_box p {padding:0 0 12px 0}

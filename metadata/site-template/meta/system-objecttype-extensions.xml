@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+    <type-extension type-id="SitePreferences">
+        <custom-attribute-definitions>
+			<attribute-definition attribute-id="zipLightbox">
+                <display-name xml:lang="x-default">Lightbox</display-name>
+                <description xml:lang="x-default">If turned on, ZIP will open in lightbox; false - ZIP will simply redirect to URL in the same page.</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="zipApiMode">
+                <display-name xml:lang="x-default">Zip API Mode Production</display-name>
+                <description xml:lang="x-default">API Mode Production for Zip</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="zipTokenization">
+                <display-name xml:lang="x-default">Zip Tokenization</display-name>
+                <description xml:lang="x-default">Enable/disable tokenization for this processor</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="zipAutoCapture">
+                <display-name xml:lang="x-default">Automatic Capture</display-name>
+                <description xml:lang="x-default">Enable/disable automatic captures of charges for this processor.</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="zipMarketingEnvironment">
+                <display-name xml:lang="x-default">Zip Marketing Environment</display-name>
+                <description xml:lang="x-default">Environment for Zip Marketing (sandbox, production)</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition default="true">
+                        <display xml:lang="x-default">Sandbox</display>
+                        <value>sandbox</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Production</display>
+                        <value>production</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="zipMarketingKey">
+                <display-name xml:lang="x-default">Zip Marketing Key</display-name>
+                <description xml:lang="x-default">Marketing Key to activate Zip widgets.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="zipApiMode">
+                <display-name xml:lang="x-default">Zip API Mode Production</display-name>
+                <description xml:lang="x-default">API Mode Production for Zip</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="zipApiKey">
+                <display-name xml:lang="x-default">Zip API Key</display-name>
+                <description xml:lang="x-default">API Key for Zip</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="zipTokenization">
+                <display-name xml:lang="x-default">Zip Tokenization</display-name>
+                <description xml:lang="x-default">Enable/disable tokenization for this processor</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="zipAutoCapture">
+                <display-name xml:lang="x-default">Automatic Capture</display-name>
+                <description xml:lang="x-default">Enable/disable automatic captures of charges for this processor.</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="zipPendingMessageStyles">
+                <display-name xml:lang="x-default">Zip Pending Message Styles</display-name>
+                <description xml:lang="x-default">Custom CSS styles for Zip Confirmation Message appearing on Thank You Page after placing an order with pending referral application.</description>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>color: #6a0000; background-color: #f5cccc; border-color: #f1b8b8; font-size: 16px;</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="zipStorefrontCartridge">
+                <display-name xml:lang="x-default">Storefront Cartridge</display-name>
+                <description xml:lang="x-default">Name of storefront cartridge</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>app_storefront_controllers</default-value>
+            </attribute-definition>
+		</custom-attribute-definitions>
+		<group-definitions>
+			<attribute-group group-id="Zip">
+                <display-name xml:lang="x-default">Zip</display-name>
+				<attribute attribute-id="zipLightbox"/>
+				<attribute attribute-id="zipTokenization"/>
+                <attribute attribute-id="zipApiMode"/>
+				<attribute attribute-id="zipApiKey"/>
+				<attribute attribute-id="zipAutoCapture"/>
+                <attribute attribute-id="zipMarketingEnvironment"/>
+				<attribute attribute-id="zipMarketingKey"/>
+                <attribute attribute-id="zipPendingMessageStyles"/>
+            </attribute-group>
+            <attribute-group group-id="ZipSG">
+                <display-name xml:lang="x-default">Zip - Site Genesis</display-name>
+				<attribute attribute-id="zipStorefrontCartridge"/>
+            </attribute-group>
+        </group-definitions>
+	</type-extension>
+	<type-extension type-id="CustomerPaymentInstrument">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="ZipToken">
+                <display-name xml:lang="x-default">Zip Token</display-name>
+                <description xml:lang="x-default">Holding Zip token for future tokenization.</description>
+                <type>password</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+		<group-definitions>
+            <attribute-group group-id="Zip">
+                <display-name xml:lang="x-default">Zip - SFRA</display-name>
+                <attribute attribute-id="ZipToken"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+	<type-extension type-id="Profile">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="ZipSaveToken">
+                <display-name xml:lang="x-default">Zip Save Token</display-name>
+                <description xml:lang="x-default">Flag to set if the customer wants to save a zip token.</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+		<group-definitions>
+            <attribute-group group-id="Zip">
+                <display-name xml:lang="x-default">Zip - SFRA</display-name>
+                <attribute attribute-id="ZipSaveToken"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+	<type-extension type-id="OrderPaymentInstrument">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="zipEmail">
+                <display-name xml:lang="x-default">Zip Email</display-name>
+                <description xml:lang="x-default">Holding the customer's email.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="zipPhone">
+                <display-name xml:lang="x-default">Zip Phone</display-name>
+                <description xml:lang="x-default">Holding the customer's phone.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+		<group-definitions>
+            <attribute-group group-id="Zip">
+                <display-name xml:lang="x-default">Zip - SFRA</display-name>
+                <attribute attribute-id="zipEmail"/>
+                <attribute attribute-id="zipPhone"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+	<type-extension type-id="Order">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="ZipToken">
+                <display-name xml:lang="x-default">Zip Token</display-name>
+                <description xml:lang="x-default">Holding the order's token.</description>
+                <type>password</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="ZipReceiptNumber">
+                <display-name xml:lang="x-default">Zip Receipt Number</display-name>
+                <description xml:lang="x-default">Holding the Zip receipt number for this order.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="ZipCapturedAmount">
+                <display-name xml:lang="x-default">Zip Captured Amount</display-name>
+                <description xml:lang="x-default">Holding captured amount for a Zip order.</description>
+                <type>double</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>0</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ZipRefundedAmount">
+                <display-name xml:lang="x-default">Zip Refunded Amount</display-name>
+                <description xml:lang="x-default">Holding refunded amount for a Zip order.</description>
+                <type>double</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>0</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="zipRequireApproval">
+                <display-name xml:lang="x-default">Zip Requires Approval</display-name>
+                <description xml:lang="x-default">Flag to indicate if the Zip order is linked to a customer account which requires approval.</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ZipCheckoutId">
+                <display-name xml:lang="x-default">Zip Checkout Id</display-name>
+                <description xml:lang="x-default">Holding Zip Checkout Id related to this order.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value></default-value>
+            </attribute-definition>
+        </custom-attribute-definitions>
+		<group-definitions>
+            <attribute-group group-id="Zip">
+                <display-name xml:lang="x-default">Zip - SFRA</display-name>
+                <attribute attribute-id="ZipToken"/>
+                <attribute attribute-id="ZipReceiptNumber"/>
+                <attribute attribute-id="ZipCapturedAmount"/>
+                <attribute attribute-id="ZipRefundedAmount"/>
+                <attribute attribute-id="zipRequireApproval"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+    <type-extension type-id="PaymentTransaction">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="ZipChargeId">
+                <display-name xml:lang="x-default">Zip Charge Id</display-name>
+                <description xml:lang="x-default">Holding Zip Charge ID.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="ZipReceiptNumber">
+                <display-name xml:lang="x-default">Zip Receipt Number</display-name>
+                <description xml:lang="x-default">Holding the Zip receipt number for this order.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="isZipAutoCapture">
+                <display-name xml:lang="x-default">Is Automatic Capture</display-name>
+                <description xml:lang="x-default">Holds the state of AutoCapture param in the capture request.</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="Zip">
+                <display-name xml:lang="x-default">Zip - SFRA</display-name>
+                <attribute attribute-id="ZipChargeId"/>
+                <attribute attribute-id="isZipAutoCapture"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+	<type-extension type-id="OrderAddress">
+        <system-attribute-definitions>
+            <attribute-definition attribute-id="countryCode">
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">United States</display>
+                        <value>US</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">France</display>
+                        <value>FR</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Italy</display>
+                        <value>IT</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Japan</display>
+                        <value>JP</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">China</display>
+                        <value>CN</value>
+                    </value-definition>
+                    <value-definition default="true">
+                        <display xml:lang="x-default">United Kingdom</display>
+                        <value>GB</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Australia</display>
+                        <value>AU</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">New Zealand</display>
+                        <value>NZ</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+        </system-attribute-definitions>
+	</type-extension>
+</metadata>

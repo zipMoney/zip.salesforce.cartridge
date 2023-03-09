@@ -1,0 +1,12 @@
+<!--- TEMPLATENAME: configTest.isml --->
+
+<div>API key : ${pdict.config.apiKey}</div>
+<div>Merchant Id : ${pdict.config.merchantId}</div>
+<div>Public Asset Key : ${pdict.config.publicAssetKey}</div>
+<div>Username : ${pdict.config.username}</div>
+<div>Password : ${pdict.config.password}</div>
+<div>Capture Method</div>
+<div>ImmediateCapture : ${pdict.config.captureMethod.immediateCapture}</div>
+<div>DelayedCapture : ${pdict.config.captureMethod.delayedCapture}</div>
+<div>ApiTimeoutSetting : ${pdict.config.captureMethod.apiTimeoutSetting}</div>
+<div>Urls : ${pdict.config.captureMethod.urls}</div>

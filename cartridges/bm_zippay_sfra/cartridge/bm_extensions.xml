@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<extensions xmlns="http://www.demandware.com/xml/bmmodules/2007-12-11"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.demandware.com/xml/bmmodules/2007-12-11 bmext.xsd">
+    <!-- =============================================================== -->
+    <!-- == == -->
+    <!-- == SITE MENU EXTENSIONS == -->
+    <!-- == == -->
+    <!-- =============================================================== -->
+
+	<menuaction id="zippay_transactions_manager" menupath="orders" position="200" site="true">
+		<name xml:lang="x-default">ZipPay Orders</name>
+		<short_description xml:lang="x-default">Manage the ZipPay Orders.</short_description>
+		<description xml:lang="x-default">Manage the ZipPay Orders related with this site orders.</description>
+		<exec pipeline="ZippayAdmin" node="Orders" />
+		<sub-pipelines>
+			<pipeline name="ZippayAdmin-Orders" />
+            <pipeline name="ZippayAdmin-RefundAction" />
+            <pipeline name="ZippayAdmin-CaptureAction" />
+            <pipeline name="ZippayAdmin-CaptureForm" />
+            <pipeline name="ZippayAdmin-RefundForm" />
+            <pipeline name="ZippayAdmin-Cancel" />
+            <pipeline name="ZippayAdmin-Capture" />
+		</sub-pipelines>
+		<icon>zippaybm/images/icon_zip.png</icon>
+	</menuaction>
+
+</extensions>

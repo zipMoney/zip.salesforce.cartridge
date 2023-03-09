@@ -1,0 +1,4 @@
+<div class="zm_calculator" style="display:block">
+<div zm-widget="repaycalc" class="zm_asset" zm-amount="${zipMoney_amount}"></div>
+<isinclude template = "zipMoney/widgets/zipMoney_learn_more"/>
+</div>

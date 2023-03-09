@@ -1,0 +1,13 @@
+<isscript>
+    var TemplateUtils = require("~/cartridge/scripts/util/template");
+</isscript>
+
+<isdecorate template="common/layout/page">
+
+<script src="https://static.zipmoney.com.au/lib/js/zm-widget-js/dist/zip-widget.min.js"></script>
+
+<div data-zm-merchant="${TemplateUtils.getZipMarketingKey()}" data-env="${TemplateUtils.getZipMarketingEnvironment()}"></div>  
+ 
+<div zm-asset="landingpage" zm-widget="inline"></div>
+
+</isdecorate>

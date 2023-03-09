@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.demandware.com/xml/impex/library/2006-10-31" library-id="SFRASharedLibrary">
+    <content content-id="zip-footer-link-text">
+        <display-name xml:lang="x-default">Zip Footer Link Text</display-name>
+        <online-flag>false</online-flag>
+        <searchable-flag>false</searchable-flag>
+        <page-attributes/>
+        <custom-attributes>
+            <custom-attribute attribute-id="body" xml:lang="x-default">Zip Footer Link Text</custom-attribute>
+        </custom-attributes>
+        <folder-links>
+            <classification-link folder-id="root"/>
+        </folder-links>
+    </content>
+    <content content-id="zip-declined">
+        <display-name xml:lang="x-default">Zip Declined</display-name>
+        <online-flag>false</online-flag>
+        <searchable-flag>false</searchable-flag>
+        <page-attributes/>
+        <custom-attributes>
+            <custom-attribute attribute-id="body" xml:lang="x-default">Your Zip payment could not be processed. Please select an alternative payment method to complete your order.</custom-attribute>
+        </custom-attributes>
+        <folder-links>
+            <classification-link folder-id="root"/>
+        </folder-links>
+    </content>
+</library>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns="http://www.demandware.com/xml/impex/services/2014-09-26">
+
+    <service-credential service-credential-id="zip.http.credentials.sandbox">
+        <url>https://global-api.sand.au.edge.zip.co/merchant</url>
+        <user-id>Sandbox API Key</user-id>
+        <password encrypted="true" encryption-type="common.export"></password>
+    </service-credential>
+
+    <service-credential service-credential-id="zip.http.credentials.production">
+        <url>https://global-api.prod.au.edge.zip.co/merchant</url>
+        <user-id>Production API Key</user-id>
+        <password encrypted="true" encryption-type="common.export"></password>
+    </service-credential>
+
+    <service-profile service-profile-id="zip.http.service">
+        <timeout-millis>30000</timeout-millis>
+        <rate-limit-enabled>false</rate-limit-enabled>
+        <rate-limit-calls>0</rate-limit-calls>
+        <rate-limit-millis>0</rate-limit-millis>
+        <cb-enabled>true</cb-enabled>
+        <cb-calls>3</cb-calls>
+        <cb-millis>5000</cb-millis>
+    </service-profile>
+
+    <service service-id="zip.http.defaultendpoint">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix>zip</log-prefix>
+        <comm-log-enabled>true</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>zip.http.service</profile-id>
+        <credential-id>zip.http.credentials.sandbox</credential-id>
+    </service>
+
+</services>

@@ -1,0 +1,11 @@
+{
+    "hooks": [
+        {
+            "name": "app.payment.processor.Zip",
+			"script": "./cartridge/scripts/zipMoney/hooks/payment/processor/zip"
+        }, {
+            "name": "zippay.order.processor",
+            "script": "./cartridge/scripts/zipMoney/hooks/zip/orderprocess"
+        }
+    ]
+}

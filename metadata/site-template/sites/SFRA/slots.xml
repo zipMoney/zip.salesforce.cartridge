@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<slot-configurations xmlns="http://www.demandware.com/xml/impex/slot/2008-09-08">
+    <slot-configuration slot-id="zip-pdp" context="global" configuration-id="Zip Product Widget Slot Configuration" assigned-to-site="true">
+        <template>slots/html/zipWidgetProduct.isml</template>
+        <enabled-flag>true</enabled-flag>
+        <content>
+            <html/>
+        </content>
+        <custom-attributes>
+            <custom-attribute attribute-id="showAddToBag">false</custom-attribute>
+        </custom-attributes>
+    </slot-configuration>
+
+    <slot-configuration slot-id="zip-cart" context="global" configuration-id="Zip Cart Widget Slot Configuration" default="true" assigned-to-site="true">
+        <template>slots/html/zipWidgetCart.isml</template>
+        <enabled-flag>true</enabled-flag>
+        <content>
+            <html/>
+        </content>
+        <custom-attributes>
+            <custom-attribute attribute-id="showAddToBag">false</custom-attribute>
+        </custom-attributes>
+    </slot-configuration>
+</slot-configurations>

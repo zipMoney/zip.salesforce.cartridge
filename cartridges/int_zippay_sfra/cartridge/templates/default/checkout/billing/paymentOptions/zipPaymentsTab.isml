@@ -1,0 +1,17 @@
+<isscript>
+    var TemplateUtils = require("~/cartridge/scripts/util/template");
+    var logoUrl = TemplateUtils.getPaymentMethodLogoUrl(paymentOption.ID);
+
+    var paymentMethodId = paymentOption.ID.toLowerCase();
+    var paymentTabId = '#' + paymentMethodId + '_tab_pane';
+</isscript>
+<li class="nav-item zip-payment-item" data-method-id="${paymentOption.ID}">
+    <a class="nav-link zip-payments-${paymentMethodId}-tab" data-toggle="tab" href="${paymentTabId}" role="tab">
+        <img class="zip-payments-option"
+                src="${logoUrl}"
+                height="32"
+                alt="${paymentOption.name}"
+                title="${paymentOption.name}"
+        /> <span class="option-name">${paymentOption.name}</span>
+    </a>
+</li>

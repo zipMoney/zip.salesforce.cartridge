@@ -1,0 +1,11 @@
+<isscript>
+    var TemplateUtils = require("~/cartridge/scripts/zipMoney/util/template");
+</isscript>
+
+<isif condition="${TemplateUtils.isShowZipWidgets()}">
+<div class="zip-footer">
+    <a href="${URLUtils.https('Zip-Landing').toString()}">
+        ${TemplateUtils.getZipFooterLinkText()}
+    </a>
+</div>
+</isif>

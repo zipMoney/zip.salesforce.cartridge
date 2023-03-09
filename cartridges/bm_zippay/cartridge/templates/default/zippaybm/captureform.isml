@@ -1,0 +1,26 @@
+<div id="zip_capture_form" class="">
+    <form class="zippay_action_form zippaybm_content" action="${URLUtils.url('ZippayAdmin-CaptureAction')}">
+        <input type="hidden" name="orderNo" value="${pdict.order.orderNo}" />
+
+        <h2>${Resource.msg('transaction.capture.title', 'zippaybm', null)}</h2>
+
+        <div class="zippay_error_msg_box zippay_error_msg_box_amt_required"><p>${Resource.msg('forms.error.amt.required', 'zippaybm', null)}</p></div>
+        <div class="zippay_error_msg_box zippay_error_msg_box_amt_greaterzero"><p>${Resource.msg('forms.error.amt.greaterzero', 'zippaybm', null)}</p></div>
+        <div class="zippay_error_msg_box zippay_error_msg_box_amt_float"><p>${Resource.msg('forms.error.amt.float', 'zippaybm', null)}</p></div>
+
+        <div class="zippay_error_msg_box zippay_error_msg_box_note_required"><p>${Resource.msg('forms.error.note.required', 'zippaybm', null)}</p></div>
+   
+        <table class="zippaybm_transaction_detail_table infobox w e s n">
+            <tr>
+                <td class="infobox_title top">${Resource.msg('transaction.capture.captureamount', 'zippaybm', null)}:</td>
+                <td class="infobox_item top"><input type="text" name="amt" value="" class="capture_amount" data-validation="required,float,greaterzero" /> 
+                <span class="capture_remain_amount">${pdict.amount}</span>&nbsp;${pdict.currencyCode}</td>
+            </tr>
+            <tr>
+                <td class="infobox_title top">${Resource.msg('transaction.capture.fullcapture', 'zippaybm', null)}:</td>
+                <td class="infobox_item top"><input type="checkbox" name="full_capture" value="" class="full_capture_checkbox"  ></td>
+            </tr>
+        </table>
+
+    </form>
+</div>

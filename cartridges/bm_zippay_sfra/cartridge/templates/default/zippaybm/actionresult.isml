@@ -1,0 +1,12 @@
+<isdecorate template="zippaybm/util/pt_zippay">
+
+<isinclude template="inc/Modules">
+<isinclude template="zippaybm/util/modules">
+
+<isprint value = "${pdict.result}" >
+
+<div class="zippaybm_footer">
+    <a class="button" href="${URLUtils.https('ZippayAdmin-Orders')}">&lt;&lt; ${Resource.msg('transactions.backordering', 'zippaybm', null)}</a>
+</div>
+
+</isdecorate>

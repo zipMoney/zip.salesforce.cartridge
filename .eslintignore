@@ -1,0 +1,6 @@
+doc/
+./*.js
+bin/
+cartridges/int_zippay_sfra/cartridge/static/*
+cartridges/int_zipmoney/cartridge/static/
+cartridges/bm_zippay/cartridge/static/

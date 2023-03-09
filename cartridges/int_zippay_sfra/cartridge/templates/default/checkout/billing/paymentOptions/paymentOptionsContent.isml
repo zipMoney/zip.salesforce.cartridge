@@ -1,0 +1,11 @@
+<isscript>
+    var TemplateHelpers = require('~/cartridge/scripts/util/template');
+</isscript>
+<isloop items="${pdict.order.billing.payment.applicablePaymentMethods}" var="paymentOption" status="loopSate">
+    <isif condition="${paymentOption.ID === 'CREDIT_CARD'}">
+        <isinclude template="checkout/billing/paymentOptions/creditCardContent" />
+    </isif>
+    <isif condition="${paymentOption.ID === 'Zip'}">
+        <isinclude template="checkout/billing/paymentOptions/zipContent" />
+    </isif>
+</isloop>

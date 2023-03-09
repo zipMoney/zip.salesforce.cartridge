@@ -1,0 +1,6 @@
+<div class="tab-pane zip-payments-content zip_tab_pane" id="zip_tab_pane" role="tabpanel">
+    <fieldset class="payment-form-fields">
+        <isset name="zipForm" value="${pdict.zipForm}" scope="page"/>
+        <isinclude template="checkout/billing/paymentOptions/zipPaymentsContent" />
+    </fieldset>
+</div>

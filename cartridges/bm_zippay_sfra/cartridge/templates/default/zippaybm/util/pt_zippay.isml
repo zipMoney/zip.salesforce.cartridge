@@ -1,0 +1,51 @@
+<isif condition="${pdict.CurrentHttpParameterMap.format.stringValue == 'ajax'}">
+
+	<isdecorate template="zippaybm/util/pt_empty">
+	
+		<div class="zippaybm_content zippaybm_content_ajax">
+			<isreplace/>
+		</div>
+		
+	</isdecorate>
+	
+<iselse>
+
+	<isdecorate template="application/MenuFrame">
+	
+		<link rel="stylesheet" href="${URLUtils.staticURL('/zippaybm/css/bm.css')}" />
+		<link rel="stylesheet" href="${URLUtils.staticURL('/jscript/ext/resources/css/ext-all.css')}" />
+		
+		<script type="text/javascript" src="${URLUtils.staticURL('/jscript/ext/adapter/ext/ext-base.js')}"></script>
+		<script type="text/javascript" src="${URLUtils.staticURL('/jscript/ext/ext-all.js')}"></script>
+		
+		<script type="text/javascript" src="${URLUtils.staticURL('/zippaybm/js/zippayAdmin.js')}"></script>
+
+		<script type="text/javascript">
+			zippayAdmin.init({
+				urls: {
+					captureForm: "${URLUtils.https('ZippayAdmin-CaptureForm')}",
+					refundForm: "${URLUtils.url('ZippayAdmin-RefundForm')}",
+					refund: "${URLUtils.url('ZippayAdmin-Refund')}"
+				},
+				resources: {
+					submit: "${Resource.msg('forms.submit', 'zippaybm', null)}",
+					cancel: "${Resource.msg('forms.cancel', 'zippaybm', null)}",
+					errorMsgTitle: "${Resource.msg('msg.error.title', 'zippaybm', null)}",
+					captureTitle: "${Resource.msg('msg.capture.title', 'zippaybm', null)}", 
+	                refundTitle: "${Resource.msg('msg.refund.title', 'zippaybm', null)}",
+					serverError: "${Resource.msg('server.error', 'zippaybm', null)}",
+					loadMaskText: {
+						authorization: "${Resource.msg('msg.creatingauthorizationtransaction', 'zippaybm', null)}",
+						capture: "${Resource.msg('msg.creatingcapturetransaction', 'zippaybm', null)}"
+					}
+				}
+			});
+		</script>
+		
+		<div class="zippaybm_content js_zippaybm_content">
+			<isreplace/>
+		</div>
+	
+	</isdecorate>
+
+</isif>

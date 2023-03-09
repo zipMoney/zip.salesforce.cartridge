@@ -1,0 +1,5 @@
+<!--- TEMPLATENAME: widget_api_product.isml --->
+<div id="zm-product-asset" class="zm_product zm_asset" data-zm-asset="productwidget" data-zm-widget="popup" data-zm-popup-asset="termsdialog"></div>
+<script type="text/javascript">
+	if(window.$zmJs) window.$zmJs._collectWidgetsEl( window.$zmJs );
+</script>

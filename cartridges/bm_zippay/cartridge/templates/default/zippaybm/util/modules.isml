@@ -1,0 +1,5 @@
+<ismodule template = "zippaybm/components/pagination"
+	name="zippaypagination"
+	attribute="pageurl"
+	attribute="pagingmodel"
+/>

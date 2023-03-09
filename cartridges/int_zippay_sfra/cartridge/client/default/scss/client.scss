@@ -1,0 +1,13 @@
+.data-checkout-stage[data-checkout-stage] button.zip-checkout {
+  display: none;
+}
+
+.data-checkout-stage.zip[data-checkout-stage=placeOrder] {
+  button.zip-checkout {
+    display: block;
+  }
+
+  button.place-order {
+    display: none;
+  }
+}

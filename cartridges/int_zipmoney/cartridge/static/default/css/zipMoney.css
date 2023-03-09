@@ -1,0 +1,39 @@
+@CHARSET "ISO-8859-1";
+.zm_calculator {
+	margin: 10px 0;
+}
+
+.zm_calculator .zm_asset{
+	display: inline-block;
+}
+
+.zm_asset{
+  font-size: 15em;
+}
+.zm_product img{
+  margin: 20px 0 0;	
+}
+
+.zipMoney_learn_more {
+	cursor : pointer;
+	color : green;
+}
+
+.zipMoney_caculator_right {
+	text-align : right
+}
+
+.label-inline .pm_zipPay,
+.label-inline .pm_zipMoney{
+	display: table;
+}
+
+.pm_zipPay img{
+	width: 55%;
+	height: 100%;
+}
+
+.pm_zipMoney img{
+	width: 65%;
+	height: 100%;
+}

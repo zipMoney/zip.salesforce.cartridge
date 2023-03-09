@@ -1,0 +1,2 @@
+<!--- TEMPLATENAME: widget_api_cart.isml --->
+<div  data-zm-asset="cartwidget" data-zm-widget="popup" data-zm-popup-asset="termsdialog"></div>

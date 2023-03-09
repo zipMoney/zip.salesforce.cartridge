@@ -1,0 +1,45 @@
+<iscontent type="text/javascript" charset="UTF-8" compact="true"/>
+
+<isscript>
+    var ZipConfig = require('~/cartridge/scripts/zipMoney/config/config');
+    var ZipModel = require('~/cartridge/scripts/zipMoney/models/ZipModel');
+
+    var urls = {
+        cancel: URLUtils.https('Zip-Cancel').toString(),
+        checkout: URLUtils.https('Zip-Checkout', 'format', 'ajax').toString(),
+        redirect: URLUtils.https('Zip-Redirect').toString(),
+        removeToken: URLUtils.https('Zip-RemoveToken').toString(),
+        declined: URLUtils.https('Checkout-Begin', 'stage', 'payment', 'error', 1).toString()
+    };
+
+    var texts = {
+        confirmZipTokenDelete: Resource.msg('confirm.ziptoken.remove', 'zip', null),
+        continueToZip: Resource.msg('continueToZip', 'zip', null),
+        technicalError: Resource.msg('confirm.error.technical', 'checkout', null),
+        zipDeclined: Resource.msg('error.zipDeclined', 'zip', null),
+        errorZipAddress: Resource.msg('error.zip.address', 'zip', null),
+        errorInsufficientFunds: Resource.msg('error.zip.insufficientFunds', 'zip', null)
+    };
+
+    var zipError = "";
+
+    if (!empty(session.privacy.ZipErrorCode)) {
+        zipError = session.privacy.ZipErrorCode;
+        session.privacy.ZipErrorCode = null;
+    }
+
+    var config = {
+        zipLightbox: ZipModel.isLightbox()
+    };
+
+    var resources = {
+        error: zipError,
+        texts: texts,
+        urls: urls,
+        config: config
+    };
+</isscript>
+
+(function (){
+    window.ZipResources = <isprint value="${JSON.stringify(resources)}" encoding="on"/>;
+}());

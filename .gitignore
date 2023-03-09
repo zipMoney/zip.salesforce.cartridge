@@ -1,0 +1,9 @@
+node_modules/
+coverage/
+npm-debug.log
+cartridges.zip
+.idea/
+dw.json
+.DS_Store
+.vscode/
+doc/
