@@ -2,13 +2,13 @@
 <services xmlns="http://www.demandware.com/xml/impex/services/2014-09-26">
 
     <service-credential service-credential-id="zip.http.credentials.sandbox">
-        <url>https://api.zip.co/merchant</url>
+        <url>https://api.sandbox.zip.co/merchant</url>
         <user-id>Sandbox API Key</user-id>
         <password encrypted="true" encryption-type="common.export"></password>
     </service-credential>
 
     <service-credential service-credential-id="zip.http.credentials.production">
-        <url>https://api.sandbox.zip.co/merchant</url>
+        <url>https://api.zip.co/merchant</url>
         <user-id>Production API Key</user-id>
         <password encrypted="true" encryption-type="common.export"></password>
     </service-credential>
