@@ -3,15 +3,26 @@
 
 var page = module.superModule;
 var server = require('server');
+var TempateUtils = require('*/cartridge/scripts/util/template');
+var zippayEnabled = TempateUtils.isZippayEnabled();
 
-var ZipHelpers = require('~/cartridge/scripts/zip/helpers/zip');
+var ZipHelpers = require('*/cartridge/scripts/zip/helpers/zip');
 
 server.extend(page);
 
+/**
+ * CheckoutServices-PlaceOrder : Append this method to clear zip session variable
+ * @name Base/CheckoutServices-PlaceOrder
+ * @function
+ * @memberof CheckoutServices
+ * @param {category} - sensitive
+ * @param {returns} - json
+ * @param {serverfunction} - append
+ */
 server.append(
     'PlaceOrder',
     function (req, res, next) {
-        if (!empty(session.privacy.ZipErrorCode)) {
+        if (zippayEnabled && !empty(session.privacy.ZipErrorCode)) {
             var viewData = res.getViewData();
 
             viewData.zipError = session.privacy.ZipErrorCode;
@@ -25,6 +36,15 @@ server.append(
     }
 );
 
+/**
+ * CheckoutServices-SubmitPayment : Append this method to add zip params after submitting payment information
+ * @name Base/CheckoutServices-SubmitPayment
+ * @function
+ * @memberof CheckoutServices
+ * @param {category} - sensitive
+ * @param {returns} - json
+ * @param {serverfunction} - append
+ */
 server.append(
     'SubmitPayment',
     function (req, res, next) {
@@ -33,13 +53,17 @@ server.append(
 
         var viewData = res.viewData;
 
-        if (empty(viewData.error) && !viewData.error && ZipHelpers.isPaymentMethodZip(viewData.paymentMethod.value)) {
-            var CustomerTokenInWalletModel = require('~/cartridge/models/zip/customerTokenInWallet');
+        if (zippayEnabled && empty(viewData.error) && !viewData.error) {
+            var CustomerTokenInWalletModel = require('*/cartridge/models/zip/customerTokenInWallet');
             var PaymentMgr = require('dw/order/PaymentMgr');
 
-            var zipForm = server.forms.getForm('zip');
+            var params = request.httpParameterMap; // eslint-disable-line no-undef
+            var saveZipParam = params.dwfrm_zip_saveZip;
+            var saveZip = true;
+            if (saveZipParam && saveZipParam.empty) {
+                saveZip = false;
+            }
 
-            var saveZip = zipForm.saveZip.selected;
             var hasZipToken = false;
             var customerRawData = req.currentCustomer.raw;
             var customerProfile = customerRawData.getProfile();
@@ -72,16 +96,15 @@ server.append(
                 var viewDataInner = res.viewData;
                 var currentBasket = BasketMgr.getCurrentBasket();
                 var billingAddress = currentBasket.billingAddress;
-                
 
                 Transaction.wrap(function () {
                     var collections = require('*/cartridge/scripts/util/collections');
 
-                	var paymentInstruments = currentBasket.getPaymentInstruments(paymentMethodId);
-                	collections.forEach(paymentInstruments, function(paymentInstrument){
-                		paymentInstrument.custom.zipEmail = currentBasket.getCustomerEmail();
-                		paymentInstrument.custom.zipPhone = billingAddress.getPhone();
-                	});
+                    var paymentInstruments = currentBasket.getPaymentInstruments(paymentMethodId);
+                    collections.forEach(paymentInstruments, function (paymentInstrument) {
+                        paymentInstrument.custom.zipEmail = currentBasket.getCustomerEmail(); // eslint-disable-line no-param-reassign
+                        paymentInstrument.custom.zipPhone = billingAddress.getPhone(); // eslint-disable-line no-param-reassign
+                    });
                 });
 
                 if (empty(viewDataInner.customer)) {

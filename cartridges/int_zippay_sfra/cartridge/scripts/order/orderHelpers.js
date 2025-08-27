@@ -10,6 +10,13 @@ var Locale = require('dw/util/Locale');
 
 var OrderModel = require('*/cartridge/models/order');
 
+/**
+* Returns a list of orders for the current customer
+* @param {Object} currentCustomer - object with customer properties
+* @param {Object} querystring - querystring properties
+* @param {string} locale - the current request's locale id
+* @returns {Object} - orderModel of the current dw order object
+* */
 superMdl.getOrders = function (currentCustomer, querystring, locale) {
     // get all orders for this user
     var customerNo = currentCustomer.profile.customerNo;

@@ -12,5 +12,5 @@
            missing-error="error.zip.missing.phone" 
     />
 
-   <field formid="saveZip" label="label.savetoacc" binding="saveZip" type="boolean" mandatory="false" />
+   <field formid="saveZip" label="label.savetoacc" binding="saveZip" type="boolean" mandatory="false" checked="true" />
 </form>

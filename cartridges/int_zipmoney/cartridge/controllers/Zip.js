@@ -8,7 +8,7 @@ var storefrontCartridgeName = loadPreference.loadStorefrontCartridgeName();
 var guard = require(storefrontCartridgeName + '/cartridge/scripts/guard');
 var app = require(storefrontCartridgeName + '/cartridge/scripts/app');
 
-var ZipCheckoutSessionModel = require('~/cartridge/scripts/zipMoney/models/ZipCheckoutSessionModel');
+var ZipCheckoutSessionModel = require('*/cartridge/scripts/zip/helpers/checkoutSession');
 
 /**
  * Fail the order linked to the checkout session.
@@ -23,24 +23,31 @@ function failZipSessionOrder() {
     Transaction.wrap(function () { session.privacy.ZipCheckoutId = null; });
 }
 
+/**
+ * Zip landing page.
+ */
 function landing () {
     var rootFolder = require('dw/content/ContentMgr').getSiteLibrary().root;
     require(storefrontCartridgeName + '/cartridge/scripts/meta').update(rootFolder);
     app.getView().render('zipMoney/landing.isml');
 }
 
+/**
+ * Setting recoverable error name and message.
+ */
 function RecoverableError (message) {
     this.message = message;
     this.name = 'RecoverableError';
 }
 
+/**
+ * Handling zip result approved.
+ */
 function handleZipResultApproved (order, checkoutId) {
     var Transaction = require('dw/system/Transaction');
     var Order = app.getModel('Order');
     var checkoutHelpers = require('~/cartridge/scripts/zipMoney/checkoutHelpers');
-    var saveToken = require('~/cartridge/scripts/zipMoney/saveToken');
-
-    Transaction.wrap(function () { order.custom.zipRequireApproval = false; });
+    var saveToken = require('*/cartridge/scripts/zip/saveToken');
 
     try {
         saveToken(order, checkoutId);
@@ -78,34 +85,15 @@ function handleZipResultApproved (order, checkoutId) {
     Transaction.wrap(function () { session.privacy.ZipCheckoutId = null; });
 }
 
-function handleZipResultReferred(order) {
-    var Transaction = require('dw/system/Transaction');
-
-    if (order.getStatus().value !== order.ORDER_STATUS_CREATED) {
-        throw new RecoverableError("Only orders with status CREATED can be processed further (Zip Result: referred).");
-    }
-
-    var placePendingOrder = require('~/cartridge/scripts/zipMoney/util/placePendingOrder');
-
-    Transaction.wrap(function () { order.custom.zipRequireApproval = true; });
-
-    var refResult = placePendingOrder(order);
-
-    if (refResult.error) {
-        failZipSessionOrder();
-
-        throw new RecoverableError("Error occurred while trying to place pending order (Zip Result: referred).");
-    }
-
-    ZipCheckoutSessionModel.removeZipOrder();
-    Transaction.wrap(function () { session.privacy.ZipCheckoutId = null; });
-}
-
+/**
+ * Redirects to corresponding page from zip hosted page.
+ */
+// eslint-disable-next-line complexity
 function redirect () {
     var URLUtils = require('dw/web/URLUtils');
     var OrderMgr = require('dw/order/OrderMgr');
     var Transaction = require('dw/system/Transaction');
-    var RetrieveCheckoutZipAPIRequest = require('~/cartridge/scripts/zipMoney/api/request/retrieveCheckout');
+    var RetrieveCheckoutZipAPIRequest = require('*/cartridge/scripts/zip/api/request/retrieveCheckout');
 
     var result = request.httpParameterMap.result.value;
     var checkoutId = request.httpParameterMap.checkoutId.value;
@@ -123,11 +111,9 @@ function redirect () {
     var declineUrl = checkoutUrl;
 
     // url for general errors
-    var errorUrl = URLUtils.url('cart');
-
+    var errorUrl = URLUtils.https('Cart-Show');
     if (!empty(session.privacy.ZipCheckoutId) && checkoutId !== session.privacy.ZipCheckoutId) {
         failZipSessionOrder();
-
         response.redirect(checkoutUrl);
         return;
     }
@@ -139,7 +125,19 @@ function redirect () {
         var orderId = retrieveCheckoutResponseData.order.reference;
         var order = OrderMgr.getOrder(orderId);
 
-        if (!order) {
+        if (!order || order.getStatus().value !== order.ORDER_STATUS_CREATED) {
+            failZipSessionOrder();
+            //Redirect to basket page on approval from referral flow email
+            if (order.custom.zipRequireApproval) {
+                Transaction.wrap(function () { order.custom.zipRequireApproval = false; });
+                //response.redirect(errorUrl);
+                throw new Error("Order not created.");
+            }
+            Transaction.wrap(function () {
+                session.privacy.zipMoneyCancelled = true;
+            });
+
+            response.redirect(failUrl);
             throw new Error("Order not found.");
         }
 
@@ -149,25 +147,31 @@ function redirect () {
 
         if (result === 'cancelled') {
             failZipSessionOrder();
+            Transaction.wrap(function () {
+                session.privacy.zipMoneyCancelled = true;
+            });
 
             response.redirect(cancelUrl);
         } else if (result === 'declined') {
             failZipSessionOrder();
-
             Transaction.wrap(function () {
                 session.privacy.zipMoneyDeclined = true;
             });
 
             response.redirect(declineUrl);
         } else if (result === 'approved') {
-            handleZipResultApproved(order, checkoutId);
-
-            response.redirect(URLUtils.url('Zip-ShowConfirmation', 'ID', order.orderNo));
-
+                handleZipResultApproved(order, checkoutId);
+                session.privacy.OrderNo = order.orderNo;
+                response.redirect(URLUtils.url('Zip-ShowConfirmation'));
         } else if (result === 'referred') {
-            handleZipResultReferred(order);
+            failZipSessionOrder();
 
-            response.redirect(URLUtils.url('Zip-ShowConfirmation', 'ID', order.orderNo));
+             Transaction.wrap(function () {
+                 session.privacy.zipMoneyCancelled = true;
+                 session.privacy.zipMoneyReferred = true;
+                 order.custom.zipRequireApproval = true;
+             });
+             response.redirect(cancelUrl);
 
         } else {
             throw new Error("Invalid Zip redirect result: " + result);
@@ -188,37 +192,52 @@ function redirect () {
     }
 }
 
+/**
+ * Show order confirmation page.
+ */
 function showConfirmation () {
     var OrderMgr = require('dw/order/OrderMgr');
     var Resource = require('dw/web/Resource');
     var URLUtils = require('dw/web/URLUtils');
 
-    var orderId = request.httpParameterMap.ID.value;
-    var order = OrderMgr.getOrder(orderId);
+    var orderId = session.privacy.OrderNo;
+    if (orderId) {
+        var order = OrderMgr.getOrder(orderId);
+        delete session.privacy.OrderNo;
 
-    if (!customer.authenticated) {
-        // Initializes the account creation form for guest checkouts by populating the first and last name with the
-        // used billing address.
-        var customerForm = app.getForm('profile.customer');
-        customerForm.setValue('firstname', order.billingAddress.firstName);
-        customerForm.setValue('lastname', order.billingAddress.lastName);
-        customerForm.setValue('email', order.customerEmail);
-        customerForm.setValue('orderNo', order.orderNo);
+        if (!customer.authenticated) {
+            // Initializes the account creation form for guest checkouts by populating the first and last name with the
+            // used billing address.
+            var customerForm = app.getForm('profile.customer');
+            customerForm.setValue('firstname', order.billingAddress.firstName);
+            customerForm.setValue('lastname', order.billingAddress.lastName);
+            customerForm.setValue('email', order.customerEmail);
+            customerForm.setValue('orderNo', order.orderNo);
+            customerForm.setValue('orderUUID', order.getUUID());
+        }
+
+        app.getForm('profile.login.passwordconfirm').clear();
+        app.getForm('profile.login.password').clear();
+
+        var pageMeta = require(storefrontCartridgeName + '/cartridge/scripts/meta');
+        pageMeta.update({pageTitle: Resource.msg('confirmation.meta.pagetitle', 'checkout', 'SiteGenesis Checkout Confirmation')});
+        app.getView({
+            zipReceipt: order.custom.ZipReceiptNumber,
+            Order: order,
+            ContinueURL: URLUtils.https('Account-RegistrationForm') // needed by registration form after anonymous checkouts
+        }).render('checkout/confirmation/confirmation');
+    } else {
+        var cart = app.getModel('Cart').get();
+        if (!cart) {
+            response.redirect(URLUtils.https('Cart-Show'));
+            return;
+        }
     }
-
-    app.getForm('profile.login.passwordconfirm').clear();
-    app.getForm('profile.login.password').clear();
-
-    var pageMeta = require(storefrontCartridgeName + '/cartridge/scripts/meta');
-    pageMeta.update({pageTitle: Resource.msg('confirmation.meta.pagetitle', 'checkout', 'SiteGenesis Checkout Confirmation')});
-    app.getView({
-        zipReceipt: order.custom.ZipReceiptNumber,
-        zipRequireApproval: order.custom.zipRequireApproval,
-        Order: order,
-        ContinueURL: URLUtils.https('Account-RegistrationForm') // needed by registration form after anonymous checkouts
-    }).render('checkout/confirmation/confirmation');
 }
 
+/**
+ * Redirect url for zip declines
+ */
 function cancel () {
     if (ZipCheckoutSessionModel.hasZipOrder()) {
         ZipCheckoutSessionModel.failZipOrder();
@@ -242,10 +261,13 @@ function cancel () {
     });
 }
 
+/**
+ * Save zip token to customer profile.
+ */
 function handleBilling (paymentMethodId) {
     var PaymentMgr = require('dw/order/PaymentMgr');
     var Transaction = require('dw/system/Transaction');
-    var ZipModel = require('~/cartridge/scripts/zipMoney/models/ZipModel');
+    var ZipModel = require('*/cartridge/scripts/zip/helpers/zip');
 
     var map = request.httpParameterMap;
     var saveZipParam = map.dwfrm_zip_saveZip;
@@ -254,7 +276,7 @@ function handleBilling (paymentMethodId) {
 
     var customerProfile = customer.getProfile();
 
-    if (!empty(customerProfile) || !customer.authenticated) {
+    if (empty(customerProfile) || !customer.authenticated) {
         return;
     }
 
@@ -266,19 +288,24 @@ function handleBilling (paymentMethodId) {
 
     Transaction.wrap(function () {
         customerProfile.custom.ZipSaveToken = saveToken;
+        session.privacy.zipMoneyCancelled = false;
     });
 
 }
 
+/**
+ * Remove zip token from customer wallet.
+ */
 function removeToken () {
     var Transaction = require('dw/system/Transaction');
-    var CustomerTokenInWalletModel = require('~/cartridge/scripts/zipMoney/models/ZipCustomerTokenInWalletModel');
+    var CustomerTokenInWalletModel = require('*/cartridge/models/zip/customerTokenInWallet');
 
     if (customer.authenticated) {
         Transaction.wrap(function() {
             var customerProfile = customer.getProfile();
             var customerTokenInWalletModel = new CustomerTokenInWalletModel(customerProfile.getWallet());
             customerTokenInWalletModel.removeToken();
+            customerProfile.custom.ZipSaveToken = false;
         });
     }
 }
@@ -288,9 +315,9 @@ function checkout () {
     var Cart = app.getModel('Cart');
     var COBilling = require(storefrontCartridgeName + '/cartridge/controllers/COBilling');
     var COShipping = require(storefrontCartridgeName + '/cartridge/controllers/COShipping');
-    var CreateCheckoutZipAPIRequest = require('~/cartridge/scripts/zipMoney/api/request/createCheckout');
+    var CreateCheckoutZipAPIRequest = require('*/cartridge/scripts/zip/api/request/createCheckout');
     var OrderMgr = require('dw/order/OrderMgr');
-    var ZipOrderModel = require('~/cartridge/scripts/zipMoney/models/ZipOrderModel');
+    var ZipOrderModel = require('*/cartridge/models/zip/zipOrder');
     var response = require(storefrontCartridgeName + '/cartridge/scripts/util/Response');
 
     var cart = Cart.get();
@@ -412,7 +439,7 @@ function resetPaymentForms() {
     var Transaction = require('dw/system/Transaction');
     var PaymentInstrument = require('dw/order/PaymentInstrument');
     var URLUtils = require('dw/web/URLUtils');
-    var zipPaymentMethods = require("~/../int_zipmoney/cartridge/scripts/zipMoney/config/config").ZIP_PAYMENT_METHODS;
+    var zipPaymentMethods = require("*/cartridge/config/config").ZIP_PAYMENT_METHODS;
 
     var cart = app.getModel('Cart').get();
 
@@ -429,13 +456,16 @@ function resetPaymentForms() {
             cart.removePaymentInstruments(cart.getPaymentInstruments(PaymentInstrument.METHOD_CREDIT_CARD));
             cart.removePaymentInstruments(cart.getPaymentInstruments(PaymentInstrument.METHOD_BML));
             cart.removePaymentInstruments(cart.getPaymentInstruments(zipPaymentMethods.zip));
-
+            cart.removePaymentInstruments(cart.getPaymentInstruments(zipPaymentMethods.quadpay));
+            cart.removePaymentInstruments(cart.getPaymentInstruments(zipPaymentMethods.payflex));
         } else if (app.getForm('billing').object.paymentMethods.selectedPaymentMethodID.value.equals(PaymentInstrument.METHOD_CREDIT_CARD)) {
             app.getForm('billing').object.paymentMethods.bml.clearFormElement();
 
             cart.removePaymentInstruments(cart.getPaymentInstruments(PaymentInstrument.METHOD_BML));
             cart.removePaymentInstruments(cart.getPaymentInstruments('PayPal'));
             cart.removePaymentInstruments(cart.getPaymentInstruments(zipPaymentMethods.zip));
+            cart.removePaymentInstruments(cart.getPaymentInstruments(zipPaymentMethods.quadpay));
+            cart.removePaymentInstruments(cart.getPaymentInstruments(zipPaymentMethods.payflex));
         } else if (app.getForm('billing').object.paymentMethods.selectedPaymentMethodID.value.equals(PaymentInstrument.METHOD_BML)) {
             app.getForm('billing').object.paymentMethods.creditCard.clearFormElement();
 
@@ -446,7 +476,9 @@ function resetPaymentForms() {
             cart.removePaymentInstruments(cart.getPaymentInstruments(PaymentInstrument.METHOD_CREDIT_CARD));
             cart.removePaymentInstruments(cart.getPaymentInstruments('PayPal'));
             cart.removePaymentInstruments(cart.getPaymentInstruments(zipPaymentMethods.zip));
-        } else if (app.getForm('billing').object.paymentMethods.selectedPaymentMethodID.value.equals(zipPaymentMethods.zip)) {
+            cart.removePaymentInstruments(cart.getPaymentInstruments(zipPaymentMethods.quadpay));
+            cart.removePaymentInstruments(cart.getPaymentInstruments(zipPaymentMethods.payflex));
+        } else if (app.getForm('billing').object.paymentMethods.selectedPaymentMethodID.value.equals(zipPaymentMethods.zip) || app.getForm('billing').object.paymentMethods.selectedPaymentMethodID.value.equals(zipPaymentMethods.quadpay) || app.getForm('billing').object.paymentMethods.selectedPaymentMethodID.value.equals(zipPaymentMethods.payflex)) {
             app.getForm('billing').object.paymentMethods.creditCard.clearFormElement();
             app.getForm('billing').object.paymentMethods.bml.clearFormElement();
 
@@ -454,6 +486,8 @@ function resetPaymentForms() {
             cart.removePaymentInstruments(cart.getPaymentInstruments(PaymentInstrument.METHOD_BML));
             cart.removePaymentInstruments(cart.getPaymentInstruments('PayPal'));
             cart.removePaymentInstruments(cart.getPaymentInstruments(zipPaymentMethods.zip));
+            cart.removePaymentInstruments(cart.getPaymentInstruments(zipPaymentMethods.quadpay));
+            cart.removePaymentInstruments(cart.getPaymentInstruments(zipPaymentMethods.payflex));
         }
         return true;
     });

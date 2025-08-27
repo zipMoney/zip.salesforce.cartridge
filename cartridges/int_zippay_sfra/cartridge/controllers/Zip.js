@@ -24,14 +24,20 @@ function failZipSessionOrder() {
     Transaction.wrap(function () { session.privacy.ZipCheckoutId = null; });
 }
 
+/**
+ * Zip-Redirect : The Zip-Redirect endpoint is used to redirect to zip payment page
+ * @name Base/Zip-Redirect
+ * @function
+ * @param {serverfunction} - get
+ */
 server.get('Redirect', function (req, res, next) {
     var URLUtils = require('dw/web/URLUtils');
     var OrderMgr = require('dw/order/OrderMgr');
     var BasketMgr = require('dw/order/BasketMgr');
     var Transaction = require('dw/system/Transaction');
     var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
-    var RetrieveCheckoutZipAPIRequest = require('~/cartridge/scripts/zip/api/request/retrieveCheckout');
-    var saveToken = require('~/cartridge/scripts/zip/saveToken');
+    var RetrieveCheckoutZipAPIRequest = require('*/cartridge/scripts/zip/api/request/retrieveCheckout');
+    var saveToken = require('*/cartridge/scripts/zip/saveToken');
     var hooksHelper = require('*/cartridge/scripts/helpers/hooks');
 
     var result = req.querystring.result;
@@ -42,36 +48,31 @@ server.get('Redirect', function (req, res, next) {
     var checkoutUrl = URLUtils.url('Checkout-Begin', 'stage', 'payment');
 
     // url for order processing errors
-    var failUrl = URLUtils.url('Checkout-Begin', 'stage', 'placeOrder', 'error', 1);
+    var failUrl = URLUtils.url('Checkout-Begin', 'stage', 'payment', 'error', 3);
 
     // url for zip declines
-    var declineUrl = URLUtils.url('Checkout-Begin', 'stage', 'payment', 'error', 1);
+    var declineUrl = URLUtils.url('Checkout-Begin', 'stage', 'payment', 'error', 2);
 
     // url for user cancellation
-    var cancelUrl = URLUtils.url('Checkout-Begin', 'stage', 'placeOrder');
+    var cancelUrl = URLUtils.url('Checkout-Begin', 'stage', 'payment');
 
     // url for general errors
     var errorUrl = URLUtils.url('Cart-Show');
-
     if (!empty(session.privacy.ZipCheckoutId) && checkoutId !== session.privacy.ZipCheckoutId) {
         failZipSessionOrder();
-
         res.redirect(checkoutUrl);
         return next();
     }
 
     if (result === 'cancelled') {
         failZipSessionOrder();
-
         res.redirect(cancelUrl);
         return next();
     } else if (result === 'declined') {
         failZipSessionOrder();
-
         res.redirect(declineUrl);
         return next();
     }
-
     try {
         var retrieveCheckoutAPIRequest = new RetrieveCheckoutZipAPIRequest();
         var retrieveCheckoutResponseData = retrieveCheckoutAPIRequest.execute(checkoutId);
@@ -83,12 +84,18 @@ server.get('Redirect', function (req, res, next) {
         res.redirect(failUrl);
         return next();
     }
-
     var order = OrderMgr.getOrder(orderId);
 
-    if (!order) {
+    if (!order || order.getStatus().value !== order.ORDER_STATUS_CREATED) {
         failZipSessionOrder();
-
+        // Redirect to basket page on approval from referral flow email
+        if (order.custom.zipRequireApproval) {
+            Transaction.wrap(function () {
+                order.custom.zipRequireApproval = false;
+            });
+            res.redirect(errorUrl);
+            return next();
+        }
         res.redirect(failUrl);
         return next();
     }
@@ -98,8 +105,6 @@ server.get('Redirect', function (req, res, next) {
     });
 
     if (result === 'approved') {
-        Transaction.wrap(function () { order.custom.zipRequireApproval = false; });
-
         try {
             saveToken(order, checkoutId);
         } catch (e) {
@@ -110,7 +115,6 @@ server.get('Redirect', function (req, res, next) {
             res.redirect(failUrl);
             return next();
         }
-
         // Handles payment authorization
         var handlePaymentResult = COHelpers.handlePayments(order, order.orderNo);
         if (handlePaymentResult.error) {
@@ -135,7 +139,6 @@ server.get('Redirect', function (req, res, next) {
         var placeOrderResult = COHelpers.placeOrder(order, fraudDetectionStatus);
         if (placeOrderResult.error) {
             failZipSessionOrder();
-
             res.redirect(failUrl);
             return next();
         }
@@ -151,28 +154,11 @@ server.get('Redirect', function (req, res, next) {
         res.redirect(URLUtils.url('Order-Confirm', 'ID', order.orderNo, 'token', order.orderToken));
         return next();
     } else if (result === 'referred') {
-        if (order.getStatus().value !== order.ORDER_STATUS_CREATED) {
-            res.redirect(failUrl);
-            return next();
-        }
-
-        var placePendingOrder = require('~/cartridge/scripts/util/placePendingOrder');
-
         Transaction.wrap(function () { order.custom.zipRequireApproval = true; });
+        failZipSessionOrder();
+        var referralErrorURL = URLUtils.url('Checkout-Begin', 'stage', 'payment', 'error', 4);
 
-        var refResult = placePendingOrder(order);
-
-        if (refResult.error) {
-            failZipSessionOrder();
-
-            res.redirect(failUrl);
-            return next();
-        }
-
-        ZipCheckoutSessionModel.removeZipOrder();
-        Transaction.wrap(function () { session.privacy.ZipCheckoutId = null; });
-
-        res.redirect(URLUtils.url('Order-Confirm', 'ID', order.orderNo, 'token', order.orderToken));
+        res.redirect(referralErrorURL);
         return next();
     }
 
@@ -180,6 +166,12 @@ server.get('Redirect', function (req, res, next) {
     return next();
 });
 
+/**
+ * Zip-Cancel : The Zip-Cancel endpoint is used to cancel / fail zip order
+ * @name Base/Zip-Cancel
+ * @function
+ * @param {serverfunction} - post
+ */
 server.post('Cancel', function (req, res, next) {
     if (ZipCheckoutSessionModel.hasZipOrder()) {
         ZipCheckoutSessionModel.failZipOrder();
@@ -202,21 +194,12 @@ server.post('Cancel', function (req, res, next) {
     return next();
 });
 
-server.post('RemoveToken', function (req) {
-    var Transaction = require('dw/system/Transaction');
-    var CustomerTokenInWalletModel = require('~/cartridge/models/zip/customerTokenInWallet');
-
-    var currentCustomer = req.currentCustomer.raw;
-
-    if (currentCustomer) {
-        Transaction.wrap(function () {
-            var customerProfile = currentCustomer.getProfile();
-            var customerTokenInWalletModel = new CustomerTokenInWalletModel(customerProfile.getWallet());
-            customerTokenInWalletModel.removeToken();
-        });
-    }
-});
-
+/**
+ * Zip-Checkout : The Zip-Checkout endpoint is used to create zip order
+ * @name Base/Zip-Checkout
+ * @function
+ * @param {serverfunction} - post
+ */
 server.post('Checkout', function (req, res, next) {
     var OrderMgr = require('dw/order/OrderMgr');
     var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
@@ -225,7 +208,7 @@ server.post('Checkout', function (req, res, next) {
     var Transaction = require('dw/system/Transaction');
     var URLUtils = require('dw/web/URLUtils');
     var basketCalculationHelpers = require('*/cartridge/scripts/helpers/basketCalculationHelpers');
-    var CreateCheckoutZipAPIRequest = require('~/cartridge/scripts/zip/api/request/createCheckout');
+    var CreateCheckoutZipAPIRequest = require('*/cartridge/scripts/zip/api/request/createCheckout');
     var hooksHelper = require('*/cartridge/scripts/helpers/hooks');
 
     var currentBasket = BasketMgr.getCurrentBasket();

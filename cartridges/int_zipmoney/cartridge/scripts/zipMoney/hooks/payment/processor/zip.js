@@ -2,7 +2,7 @@
 
 /* global dw */
 
-var ZipProcessor = require('~/cartridge/scripts/zipMoney/processor');
+var ZipProcessor = require('*/cartridge/scripts/zip/processor');
 
 /**
  * Handle entry point for SG integration
@@ -10,7 +10,7 @@ var ZipProcessor = require('~/cartridge/scripts/zipMoney/processor');
  * @returns {Object} processor result
  */
 function Handle(args) {
-    var result = ZipProcessor.handle(args);
+    var result = ZipProcessor.handle(args.Basket, args.PaymentMethodID);
     return result;
 }
 
@@ -21,7 +21,7 @@ function Handle(args) {
  * @returns {Object} processor result
  */
 function Authorize(args) {
-    var result = ZipProcessor.authorize(args);
+    var result = ZipProcessor.authorize(args.Order, args.OrderNo, args.PaymentInstrument);
     return result;
 }
 

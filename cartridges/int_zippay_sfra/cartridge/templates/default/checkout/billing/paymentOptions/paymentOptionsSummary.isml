@@ -1,6 +1,4 @@
-<isscript>
-    var TemplateUtils = require('~/cartridge/scripts/util/template');
-</isscript>
+<isset name="TemplateUtils" value="${require('*/cartridge/scripts/util/template')}" scope="page"/>
 <div class="payment-details">
     <isloop items="${pdict.order.billing.payment.selectedPaymentInstruments}" var="payment">
         <isif condition="${payment.paymentMethod === 'CREDIT_CARD'}">

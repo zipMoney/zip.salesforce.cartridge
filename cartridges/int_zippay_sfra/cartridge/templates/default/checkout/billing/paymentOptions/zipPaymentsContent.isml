@@ -1,13 +1,20 @@
 <iscontent type="text/html" charset="UTF-8" compact="true"/>
-<isscript>
-    var TemplateHelpers = require('~/cartridge/scripts/util/template');
-</isscript>
 
-<script src="https://static.zipmoney.com.au/lib/js/zm-widget-js/dist/zip-widget.min.js"></script>
-<div data-zm-merchant="${TemplateUtils.getZipMarketingKey()}" data-env="${TemplateUtils.getZipMarketingEnvironment()}"></div>  
+<isset name="TemplateHelpers" value="${require('*/cartridge/scripts/util/template')}" scope="page"/>
+<isset name="logoUrl" value="${TemplateHelpers.getPaymentMethodLogoUrl(paymentOption.ID)}" scope="page"/>
+<isset name="paymentOptionID" value="${paymentOption.ID.toLowerCase()}" scope="page"/>
+
+<script src="https://static.zip.co/lib/js/zm-widget-js/dist/zip-widget.min.js"></script>
+<div data-zm-merchant="${TemplateHelpers.getZipMarketingKey()}" data-env="${TemplateHelpers.getZipMarketingEnvironment()}"></div>  
 
 <p class="zip-learn-more">
-    <span>${Resource.msg('label.ownitnow', 'zip', null)} <a href="javascript:void(0);" id="zip-widg-1" zm-widget="popup" zm-popup-asset="termsdialog" title="${Resource.msg('label.ownitnow', 'zip', null)}">${Resource.msg('label.learnmore', 'zip', null)}</a></span>
+    <span>${Resource.msg('label.ownitnow', 'zip', null)} 
+            <img class="${paymentOptionID}-payments-option-logo"
+                src="${logoUrl}"
+                alt="${paymentOption.name}"
+                title="${paymentOption.name}"
+        /> 
+    </span>
 </p>
 
 <input type="hidden" class="form-control"

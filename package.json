@@ -1,7 +1,7 @@
 {
   "init": [],
   "name": "int_zippay_sfra",
-  "version": "19.1.1",
+  "version": "21.1.1",
   "description": "Salesforce Commerce Cloud | ZipPay SFRA",
   "main": "index.js",
   "paths": {
@@ -14,7 +14,7 @@
     "compile:js": "sgmf-scripts --compile js",
     "compile:scss": "sgmf-scripts --compile css"
   },
-  "author": "Ivan Zanev",
+  "author": "Rekha Mohan Lal",
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-subset": "^1.5.0",

@@ -12,7 +12,7 @@ module.exports = [{
     mode: 'production',
     name: 'js',
     entry: {
-        zippayments: path.join(__dirname, cartridgePath + 'client/default/js/client.js')
+        zippayments: path.join(__dirname, cartridgePath + 'client/default/js/zippayments.js')
     },
     output: {
         path: path.resolve(cartridgePath + 'static/default/js/'),
@@ -26,7 +26,7 @@ module.exports = [{
     mode: 'production',
     name: 'scss',
     entry: {
-        zippayments: path.join(__dirname, cartridgePath + 'client/default/scss/client.scss')
+        zippayments: path.join(__dirname, cartridgePath + 'client/default/scss/zippayments.scss')
     },
     output: {
         path: path.resolve(cartridgePath + 'static/default/css/'),

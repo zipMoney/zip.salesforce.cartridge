@@ -9,9 +9,9 @@
     <!-- =============================================================== -->
 
 	<menuaction id="zippay_transactions_manager" menupath="orders" position="200" site="true">
-		<name xml:lang="x-default">ZipPay Orders</name>
-		<short_description xml:lang="x-default">Manage the ZipPay Orders.</short_description>
-		<description xml:lang="x-default">Manage the ZipPay Orders related with this site orders.</description>
+		<name xml:lang="x-default">ZIP Orders</name>
+		<short_description xml:lang="x-default">Manage the ZIP Orders.</short_description>
+		<description xml:lang="x-default">Manage the ZIP Orders related with this site orders.</description>
 		<exec pipeline="ZippayAdmin" node="Orders" />
 		<sub-pipelines>
 			<pipeline name="ZippayAdmin-Orders" />

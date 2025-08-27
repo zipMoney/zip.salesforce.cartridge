@@ -1,3 +1,6 @@
 <!--- TEMPLATENAME: zipMoney_checkout.isml --->
-<script type="text/javascript" src="https://static.zipmoney.com.au/checkout/checkout-v1.min.js"></script>
-<script src="${URLUtils.staticURL('/js/zipMoney.js')}"></script>
+<isset name="TemplateHelpers" value="${require('*/cartridge/scripts/util/template')}" scope="page"/>
+<isif condition="${TemplateHelpers.isZippayEnabled()}">
+	<script type="text/javascript" src="https://static.zip.co/checkout/checkout-v1.min.js"></script>
+	<script src="${URLUtils.staticURL('/js/zipMoney.js')}"></script>
+</isif>

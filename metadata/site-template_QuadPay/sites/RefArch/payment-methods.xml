@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payment-settings xmlns="http://www.demandware.com/xml/impex/paymentsettings/2009-09-15">
+    <payment-method method-id="Zip">
+        <name xml:lang="x-default">Zip</name>
+        <image>images/zip-checkout-icon.png</image>
+        <enabled-flag>true</enabled-flag>
+        <processor-id>Zip</processor-id>
+        <currencies>
+            <currency>AUD</currency>
+            <currency>GBP</currency>
+            <currency>NZD</currency>
+        </currencies>
+    </payment-method>
+
+    <payment-method method-id="QuadPay">
+        <name xml:lang="x-default">Quad Pay</name>
+        <image>images/zip-checkout-icon.png</image>
+        <enabled-flag>true</enabled-flag>
+        <processor-id>Zip</processor-id>
+        <currencies>
+            <currency>USD</currency>
+        </currencies>
+    </payment-method>
+
+    <payment-method method-id="PayFlex">
+        <name xml:lang="x-default">Pay Flex</name>
+        <image>images/zip-checkout-icon.png</image>
+        <enabled-flag>true</enabled-flag>
+        <processor-id>Zip</processor-id>
+        <currencies>
+            <currency>ZAR</currency>
+        </currencies>
+    </payment-method>
+
+</payment-settings>

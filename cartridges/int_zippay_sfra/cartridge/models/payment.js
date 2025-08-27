@@ -6,7 +6,7 @@ var PaymentMgr = require('dw/order/PaymentMgr');
 var PaymentInstrument = require('dw/order/PaymentInstrument');
 var collections = require('*/cartridge/scripts/util/collections');
 
-var ZipHelpers = require('~/cartridge/scripts/zip/helpers/zip');
+var ZipHelpers = require('*/cartridge/scripts/zip/helpers/zip');
 
 /**
  * Creates an array of objects containing applicable payment methods

@@ -2,15 +2,19 @@
 
 /* global dw */
 
-var ZipProcessor = require('~/cartridge/scripts/zip/processor');
+var ZipProcessor = require('*/cartridge/scripts/zip/processor');
 
 /**
  * Handle entry point for SG integration
  * @param {Object} basket Basket
+ * @param {Object} paymentInformation - the payment information
+ * @param {string} paymentMethodID - paymentmethod ID
+ * @param {Object} req the request object
  * @returns {Object} processor result
+ * @constructor
  */
-function Handle(basket) {
-    var result = ZipProcessor.handle(basket, 'Zip');
+function Handle(basket, paymentInformation, paymentMethodID, req) { // eslint-disable-line no-unused-vars
+    var result = ZipProcessor.handle(basket, paymentMethodID);
     return result;
 }
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.demandware.com/xml/impex/library/2006-10-31" library-id="RefArchSharedLibrary">
+    <content content-id="zip-declined">
+        <display-name xml:lang="x-default">Zip Declined</display-name>
+        <online-flag>true</online-flag>
+        <searchable-flag>false</searchable-flag>
+        <page-attributes/>
+        <custom-attributes>
+            <custom-attribute attribute-id="body" xml:lang="x-default">Your Zip payment could not be processed. Please select an alternative payment method to complete your order.</custom-attribute>
+        </custom-attributes>
+        <folder-links>
+            <classification-link folder-id="root"/>
+        </folder-links>
+    </content>
+
+	<content content-id="zip-referral-error">
+        <display-name xml:lang="x-default">Zip Referral Error</display-name>
+        <online-flag>true</online-flag>
+        <searchable-flag>false</searchable-flag>
+        <page-attributes/>
+        <custom-attributes>
+            <custom-attribute attribute-id="body" xml:lang="x-default">Your payment could not be processed as your Zip account is pending approval. Please either pay via another payment method or wait a short amount of time for approval. Please refer to your emails for the status of your application.</custom-attribute>
+        </custom-attributes>
+        <folder-links>
+            <classification-link folder-id="root"/>
+        </folder-links>
+    </content>
+	
+	<content content-id="zip-invalid-country-error">
+		<display-name xml:lang="x-default">Zip Invalid Country Error</display-name>
+		<online-flag>true</online-flag>
+		<custom-attributes>
+			<custom-attribute attribute-id="body" xml:lang="x-default">Your $paymentMethod payment could not be processed. The billing address selected is not supported by $paymentMethod at this time</custom-attribute>
+		</custom-attributes>
+  </content>
+</library>

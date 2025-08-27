@@ -25,4 +25,7 @@
 }, {
     "id": "en_NZ",
     "currencyCode": "NZD"
+}, {
+    "id": "en_ZA",
+    "currencyCode": "ZAR"
 }]
