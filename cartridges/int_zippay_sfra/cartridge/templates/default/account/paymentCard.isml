@@ -6,9 +6,9 @@
 </isscript>
 <div class="card">
     <div class="card-header clearfix">
-        <h4 class="pull-left">${Resource.msg('label.payment','account',null)}</h4>
+        <h2 class="pull-left">${Resource.msg('label.payment','account',null)}</h2>
         <isif condition="${pdict.account.payment}">
-            <a href="${URLUtils.url('PaymentInstruments-List')}" class="pull-right">${Resource.msg('link.view','account',null)}</a>
+            <a href="${URLUtils.url('PaymentInstruments-List')}" class="pull-right" aria-label="${Resource.msg('label.payment.viewsavedpaymentmethods','account',null)}">${Resource.msg('link.view','account',null)}</a>
         </isif>
     </div>
     <isif condition="${pdict.account.payment}">
@@ -19,10 +19,8 @@
         </div>
     </isif>
     <!-- Rows for Credit Cards -->
-    <isscript>
-        var config = require("~/cartridge/config/config");
-        var TemplateUtils = require("*/cartridge/scripts/util/template");
-    </isscript>
+    <isset name="config" value="${require('*/cartridge/config/config')}" scope="page"/>
+    <isset name="TemplateUtils" value="${require('*/cartridge/scripts/util/template')}" scope="page"/>
     <isloop items="${pdict.account.customerPaymentInstruments}" var="paymentInstrument">
         <div class="row justify-content-center" id="uuid-${paymentInstrument.UUID}">
             <div class="col-sm-8 col-md-6">
@@ -49,6 +47,6 @@
         </div>
     </isloop>
     <div class="card-footer card-footer-border text-center">
-        <a href="${URLUtils.url('PaymentInstruments-AddPayment')}" class="card-link">${Resource.msg('link.addnew','account',null)}</a>
+        <a href="${URLUtils.url('PaymentInstruments-AddPayment')}" class="card-link" aria-label="${Resource.msg('label.payment.addnewpayment','payment',null)}">${Resource.msg('link.addnew','account',null)}</a>
     </div>
 </div>

@@ -6,9 +6,6 @@
         }, {
             "name": "app.payment.form.processor.zip",
             "script": "./cartridge/scripts/hooks/payment/processor/zip"
-        }, {
-            "name": "zippay.order.processor",
-            "script": "./cartridge/scripts/hooks/zip/orderprocess"
         }
     ]
 }

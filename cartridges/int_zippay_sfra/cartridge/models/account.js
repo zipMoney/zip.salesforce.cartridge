@@ -3,7 +3,7 @@
 
 var AddressModel = require('*/cartridge/models/address');
 var URLUtils = require('dw/web/URLUtils');
-var config = require('~/cartridge/config/config');
+var config = require('*/cartridge/config/config');
 
 /**
  * Whether customer has zip token saved.
@@ -16,7 +16,7 @@ function hasZipToken(customerRaw) {
     }
 
     var customerProfile = customerRaw.profile;
-    var CustomerTokenInWalletModel = require('~/cartridge/models/zip/customerTokenInWallet');
+    var CustomerTokenInWalletModel = require('*/cartridge/models/zip/customerTokenInWallet');
 
     var customerHasToken = false;
 

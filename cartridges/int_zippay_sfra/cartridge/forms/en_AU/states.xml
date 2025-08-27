@@ -3,6 +3,14 @@
 	<field formid="stateCode" label="label.input.state" type="string" mandatory="true" binding="stateCode" missing-error="error.message.required" value-error="address.field.invalid" parse-error="error.message.required">
 		<options>
 			<option optionid="AL" 	label="state.au.southAstralia" value="SA"/>
+			<option optionid="ACT" label="state.au.australiancapitalterritory" value="ACT" />
+			<option optionid="NSW" label="state.au.newsouthwales" value="NSW" />
+			<option optionid="NT" label="state.au.northernterritory" value="NT" />
+			<option optionid="QLD" label="state.au.queensland" value="QLD" />
+			<option optionid="SA" label="state.au.southaustralia" value="SA" />
+			<option optionid="TAS" label="state.au.tasmania" value="TAS" />
+			<option optionid="VIC" label="state.au.victoria" value="VIC" />
+			<option optionid="WA" label="state.au.westernaustralia" value="WA" />
 			<option optionid="OTHER" label="state.other" value="OTHER"/>
 		</options>
 	</field>

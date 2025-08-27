@@ -1,8 +1,0 @@
-{
-    "hooks": [
-        {
-            "name": "zippay.order.processor",
-            "script": "./../int_zippay_sfra/cartridge/scripts/hooks/zip/orderprocess"
-        }
-    ]
-}

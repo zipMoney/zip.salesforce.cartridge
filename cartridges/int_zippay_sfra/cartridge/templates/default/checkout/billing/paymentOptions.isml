@@ -1,21 +1,16 @@
-<script>
-    <isinclude template="/zipresources.isml"/>
-</script>
+<isinclude template="/zipresources.isml"/>
 <isscript>
     var assets = require('*/cartridge/scripts/assets.js');
-    assets.addJs('https://static.zipmoney.com.au/checkout/checkout-v1.min.js');
+    assets.addJs('https://static.zip.co/checkout/checkout-v1.min.js');
     assets.addJs('js/zippayments.js');
     assets.addCss('css/zippayments.css');
 </isscript>
 
-<isscript>
-    var paymentMethodId = "CREDIT_CARD";
-    var paymentInstrument = pdict.order.billing.payment.selectedPaymentInstruments[0];
-
-    if (!empty(paymentInstrument)) {
-        var paymentMethodId = paymentInstrument.paymentMethod;
-    }
-</isscript>
+<isset name="paymentMethodId" value="CREDIT_CARD" scope="page"/>
+<isset name="paymentInstrument" value="${pdict.order.billing.payment.selectedPaymentInstruments[0]}" scope="page"/>
+<isif condition="${!empty(paymentInstrument)}">
+    <isset name="paymentMethodId" value="${paymentInstrument.paymentMethod}" scope="page"/>
+</isif>
 
 <div class="form-nav billing-nav payment-information"
      data-payment-method-id="${paymentMethodId}"

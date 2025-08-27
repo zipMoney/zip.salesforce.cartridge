@@ -28,6 +28,11 @@
         <options>
             <option optionid="AU" label="select.option.country.australia" value="AU"/>
             <option optionid="BG" label="select.option.country.bulgaria" value="BG"/>
+            <option optionid="ZA" label="South Africa" value="ZA"/>
+            <option optionid="NZ" label="New Zealand" value="NZ"/>
+            <option optionid="US" label="United States" value="US"/>
+            <option optionid="GB" label="United Kingdom" value="GB"/>
+            <option optionid="AT" label="Austria" value="AT"/>            
         </options>
     </field>
 

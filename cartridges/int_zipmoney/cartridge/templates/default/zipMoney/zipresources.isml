@@ -1,8 +1,7 @@
 <iscontent type="text/javascript" charset="UTF-8" compact="true"/>
 
 <isscript>
-    var ZipConfig = require('~/cartridge/scripts/zipMoney/config/config');
-    var ZipModel = require('~/cartridge/scripts/zipMoney/models/ZipModel');
+    var ZipModel = require('*/cartridge/scripts/zip/helpers/zip');
 
     var urls = {
         cancel: URLUtils.https('Zip-Cancel').toString(),
@@ -15,10 +14,13 @@
     var texts = {
         confirmZipTokenDelete: Resource.msg('confirm.ziptoken.remove', 'zip', null),
         continueToZip: Resource.msg('continueToZip', 'zip', null),
+        continueToQuadPay: Resource.msg('continueToQuadPay', 'zip', null),
+        continueToPayFlex: Resource.msg('continueToPayFlex', 'zip', null),
         technicalError: Resource.msg('confirm.error.technical', 'checkout', null),
         zipDeclined: Resource.msg('error.zipDeclined', 'zip', null),
         errorZipAddress: Resource.msg('error.zip.address', 'zip', null),
-        errorInsufficientFunds: Resource.msg('error.zip.insufficientFunds', 'zip', null)
+        errorInsufficientFunds: Resource.msg('error.zip.insufficientFunds', 'zip', null),
+        zipInvalidCountryError: ZipModel.getZipInvalidCountryError()
     };
 
     var zipError = "";

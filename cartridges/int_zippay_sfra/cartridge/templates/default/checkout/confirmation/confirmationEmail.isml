@@ -70,7 +70,7 @@
 
                     <!--- item price --->
                     ${Resource.msg('label.each.item.price','cart',null)} -
-                    ${lineItem.price.formatted || lineItem.price.sales.formatted}
+                    ${lineItem.priceTotal.price}
                     <br/>
                     <!--- quantity --->
                     ${Resource.msg('field.selectquantity','cart',null)}
@@ -94,9 +94,7 @@
 
     <br/>
 
-    <isscript>
-        var TemplateUtils = require('~/cartridge/scripts/util/template');
-    </isscript>
+    <isset name="TemplateUtils" value="${require('*/cartridge/scripts/util/template')}" scope="page"/>
     <!--- Payment information --->
     <div>
         <strong>${Resource.msg('label.order.payment.info', 'confirmation', null)}</strong>
@@ -183,7 +181,7 @@
 
                 <!--- item price --->
                 ${Resource.msg('label.each.item.price','cart',null)} -
-                ${lineItem.price.formatted || lineItem.price.sales.formatted}
+                ${lineItem.priceTotal.price}
                 <br/>
                 <!--- quantity --->
                 ${Resource.msg('field.selectquantity','cart',null)}

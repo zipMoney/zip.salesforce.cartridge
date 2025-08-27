@@ -27,6 +27,11 @@
            missing-error="error.message.required">
         <options>
             <option optionid="NZ" label="select.option.country.newzealand" value="NZ"/>
+            <option optionid="ZA" label="South Africa" value="ZA"/>
+            <option optionid="AU" label="Australia" value="AU"/>
+            <option optionid="US" label="United States" value="US"/>
+            <option optionid="GB" label="United Kingdom" value="GB"/>
+            <option optionid="AT" label="Austria" value="AT"/>            
         </options>
     </field>
 

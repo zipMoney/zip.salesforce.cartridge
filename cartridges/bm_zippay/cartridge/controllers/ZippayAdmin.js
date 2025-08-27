@@ -1,7 +1,9 @@
 /* global dw request response empty */
 
-var ZipModel = require('~/../int_zipmoney/cartridge/scripts/zipMoney/models/ZipModel');
-var ZipOrderModel = require('~/../int_zipmoney/cartridge/scripts/zipMoney/models/ZipOrderModel');
+var ZipModel = require('*/cartridge/scripts/zip/helpers/zip');
+var ZipOrderModel = require('*/cartridge/models/zip/zipOrder');
+var hooksHelper = require('*/cartridge/scripts/zip/helpers/hooks');
+var orderProcess = require('*/cartridge/scripts/zip/helpers/orderProcess');
 var Logger = require('dw/system/Logger');
 var ISML = require('dw/template/ISML');
 
@@ -19,12 +21,12 @@ function getOrders(orderNo) {
 
     if (empty(orderNo)) {
         systemOrders = dw.object.SystemObjectMgr.querySystemObjects('Order',
-        "status != {0}",
-        "creationDate desc", status);
+        'status != {0}',
+        'creationDate desc', status);
     } else {
         systemOrders = dw.object.SystemObjectMgr.querySystemObjects('Order',
-            "orderNo LIKE {0} AND status != {1}",
-            "creationDate desc", orderNo, status);
+            'orderNo LIKE {0} AND status != {1}',
+            'creationDate desc', orderNo, status);
     }
 
     var orders = new dw.util.ArrayList(); // eslint-disable-line no-shadow
@@ -112,9 +114,9 @@ function orders() {
     var orderNo = '';
     var orders; // eslint-disable-line no-shadow
 
-    orderNo = empty(request.httpParameterMap.orderNo.stringValue) ? "" : request.httpParameterMap.orderNo.stringValue;
+    orderNo = empty(request.httpParameterMap.orderNo.stringValue) ? '' : request.httpParameterMap.orderNo.stringValue;
     orderNo = request.httpParameterMap.transactionId.submitted ? '0' : orderNo;
-    orderNo = request.httpParameterMap.transactionId.stringValue === '' ? "" : orderNo;
+    orderNo = request.httpParameterMap.transactionId.stringValue === '' ? '' : orderNo;
 
     orders = getOrders(orderNo);
 
@@ -146,13 +148,15 @@ function renderJson(responseResult, data) {
     response.writer.print(JSON.stringify(data, null, 2));
 }
 
+/**
+ * Capture amount.
+ */
 function capture() {
-    var hooksHelper = require('~/../int_zipmoney/cartridge/scripts/zipMoney/helpers/hooks');
     var orderNo = request.httpParameterMap.orderNo.stringValue;
     var amount = parseFloat(request.httpParameterMap.amt.value);
 
     var captureResult = hooksHelper('zippay.order.processor',
-        'Capture', orderNo, amount, require('~/../int_zipmoney/cartridge/scripts/zipMoney/hooks/zip/orderprocess').Capture
+        'Capture', orderNo, amount, orderProcess.Capture
     );
     var responseResult = captureResult.success ? 'Success' : 'Error';
 
@@ -163,13 +167,12 @@ function capture() {
  * Zip order Refund Action
  */
 function refund() {
-    var hooksHelper = require('~/../int_zipmoney/cartridge/scripts/zipMoney/helpers/hooks');
     var orderNo = request.httpParameterMap.orderNo.value;
     var reason = request.httpParameterMap.note.stringValue;
     var amount = request.httpParameterMap.amt.value;
 
     var refundResult = hooksHelper('zippay.order.processor',
-       'Refund', orderNo, amount, reason, require('~/../int_zipmoney/cartridge/scripts/zipMoney/hooks/zip/orderprocess').Refund
+       'Refund', orderNo, amount, reason, orderProcess.Refund
     );
     var responseResult = refundResult.success ? 'Success' : 'Error';
 
@@ -177,7 +180,6 @@ function refund() {
 }
 
 function cancel() {
-    var hooksHelper = require('~/../int_zipmoney/cartridge/scripts/zipMoney/helpers/hooks');
     var orderNo = request.httpParameterMap.orderNo.stringValue;
 
     if (empty(orderNo)) {
@@ -186,7 +188,7 @@ function cancel() {
     }
 
     var result = hooksHelper('zippay.order.processor',
-       'Cancel', orderNo, require('~/../int_zipmoney/cartridge/scripts/zipMoney/hooks/zip/orderprocess').Cancel
+       'Cancel', orderNo, orderProcess.Cancel
     );
 
     render('zippaybm/actionresult', {
